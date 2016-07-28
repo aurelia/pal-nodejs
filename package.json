@@ -1,0 +1,34 @@
+{
+  "name": "aurelia-pal-nodejs",
+  "description": "node-js implementation of the aurelia pal-abstraction layer",
+  "author": "Meirion Hughes <crakinshot@yahoo.com>",
+  "license": "MIT",
+  "main": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
+  "version": "1.0.0-alpha.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aurelia/pal-nodejs"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-jasmine": "^2.3.0",
+    "gulp-plumber": "^1.1.0",
+    "gulp-replace": "^0.5.4",
+    "gulp-rimraf": "^0.2.0",
+    "gulp-shell": "^0.5.2",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-typescript": "^2.13.4",
+    "jasmine": "^2.4.1",
+    "merge2": "^1.0.2",
+    "run-sequence": "^1.2.1",
+    "typings": "^1.0.4"
+  },
+  "scripts": {
+    "test": "gulp test"
+  },
+  "dependencies": {
+    "aurelia-pal": "^1.0.0",
+    "jsdom": "^9.2.1"
+  }
+}

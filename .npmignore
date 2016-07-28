@@ -1,0 +1,8 @@
+source
+spec
+.vscode
+typings
+**/*.map
+tsconfig.json
+typings.json
+gulpfile.js
