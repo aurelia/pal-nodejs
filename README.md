@@ -10,3 +10,25 @@ This library is part of the [Aurelia](http://www.aurelia.io/) platform and conta
 ## Platform Support
 
 This library can be used in **NodeJS**.
+
+# Building The Code
+
+To build the code, follow these steps.
+
+1. Ensure that [NodeJS](http://nodejs.org/) is installed. This provides the platform on which the build tooling runs.
+2. From the project folder, execute the following command:
+
+  ```shell
+  npm install
+  ```
+3. Ensure that [Gulp](http://gulpjs.com/) is installed. If you need to install it, use the following command:
+
+  ```shell
+  npm install -g gulp
+  ```
+4. To build and test the code, you can now run:
+
+  ```shell
+  npm test
+  ```
+5. You will find the compiled code in the `dist` folder, available in CommonJS module format. 
