@@ -4,7 +4,7 @@ import {IGlobal} from './global';
 
 export class NodeJsPlatform implements IPlatform {
 
-  constructor(public global: IGlobal) {
+  constructor(global: IGlobal) {
     this.performance = this.global.performance;
     this.location = this.global.location;
     this.history = this.global.history;
@@ -41,7 +41,7 @@ export class NodeJsPlatform implements IPlatform {
   * @param callback A callback that will receive each module id along with the module object. Return true to end enumeration.
   */
   eachModule(callback: (key: string, value: Object) => boolean): void {
-    //TODO: What is this? 
+    //TODO: What is this?
   }
   /**
   * Add a global event listener.
@@ -50,7 +50,7 @@ export class NodeJsPlatform implements IPlatform {
   * @param capture If true, useCapture indicates that the user wishes to initiate capture.
   */
   addEventListener(eventName: string, callback: Function, capture?: boolean): void {
-    this.global.addEventListener(eventName, <any>callback, capture);
+    this.global.addEventListener(eventName, callback, capture);
   }
   /**
   * Remove a global event listener.
@@ -59,7 +59,7 @@ export class NodeJsPlatform implements IPlatform {
   * @param capture Specifies whether the listener to be removed was registered as a capturing listener or not.
   */
   removeEventListener(eventName: string, callback: Function, capture?: boolean): void {
-    this.global.removeEventListener(eventName, <any>callback, capture);
+    this.global.removeEventListener(eventName, callback, capture);
   }
 
   /**

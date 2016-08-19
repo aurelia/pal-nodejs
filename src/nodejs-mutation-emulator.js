@@ -3,11 +3,11 @@ import {IObserver} from './observer';
 import {IDisposable} from './disposeable';
 
 export class NodeJsMutationEmulator {
-  private cycleMutations: MutationRecord[];
-  private cycleTimerId: NodeJS.Timer;
-  private targets: { target: Node, last: Node }[];
-  private observers: IObserver[];
-  public interval:number;
+  cycleMutations: MutationRecord[];
+  cycleTimerId: NodeJS.Timer;
+  targets: { target: Node, last: Node }[];
+  observers: IObserver[];
+  interval:number;
 
   constructor(interval?: number) {
     this.interval = (interval === undefined) ? 100 : interval;
@@ -21,8 +21,8 @@ export class NodeJsMutationEmulator {
      if (this.interval > 0)
       this.cycleTimerId = setInterval(() => this.cycle(), this.interval);
   }
-  
-  stop(){    
+
+  stop(){
     clearInterval(this.cycleTimerId);
   }
 
@@ -51,17 +51,17 @@ export class NodeJsMutationEmulator {
     }
   }
 
-  public cycle() {
-    this.cycleDirtyCheck();
-    this.cycleReport();
-    this.cycleTidy();
+  cycle() {
+    this._cycleDirtyCheck();
+    this._cycleReport();
+    this._cycleTidy();
   }
 
-  private cycleTidy() {
-    //remove targets no longer having any observer;  
+  _cycleTidy() {
+    //remove targets no longer having any observer;
   }
 
-  private cycleReport() {
+  _cycleReport() {
     let mutations = this.cycleMutations;
     this.cycleMutations = [];
 
@@ -80,7 +80,7 @@ export class NodeJsMutationEmulator {
     });
   }
 
-  private cycleDirtyCheck() {
+  _cycleDirtyCheck() {
     let targets = this.targets;
     let targetsCount = targets.length;
 
@@ -89,15 +89,15 @@ export class NodeJsMutationEmulator {
       let targetNode = target.target;
       let previous = target.last;
 
-      this.cycleDirtyCheckAttributes(targetNode, previous);
-      this.cycleDirtyCheckNodeValue(targetNode, previous);
-      this.cycleDirtyCheckChildList(targetNode, previous);     
+      this._cycleDirtyCheckAttributes(targetNode, previous);
+      this._cycleDirtyCheckNodeValue(targetNode, previous);
+      this._cycleDirtyCheckChildList(targetNode, previous);
 
       target.last = targetNode.cloneNode(true);
     }
   }
-  
-  private cycleDirtyCheckAttributes(target: Node, previous:Node ) {
+
+  _cycleDirtyCheckAttributes(target: Node, previous: Node) {
     if(!target.attributes)
         return;
 
@@ -107,12 +107,12 @@ export class NodeJsMutationEmulator {
 
     for (let i = 0; i < countNew; i++) {
       let attr = attrNew.item(i);
-      let old = this.findAttr(attrOld, attr.name);
+      let old = this._findAttr(attrOld, attr.name);
 
       let mutated = false;
 
       if (!old || old.value != attr.value) {
-        let mutation = <MutationRecord>{
+        let mutation = {
           target: target,
           type: "attributes",
           addedNodes: {},
@@ -134,7 +134,7 @@ export class NodeJsMutationEmulator {
       let old = attrOld.item(i);
 
       if (!this.findAttr(attrNew, old.name)) {
-        let mutation = <MutationRecord>{
+        let mutation = {
           target: target,
           type: "attributes",
           addedNodes: {},
@@ -151,9 +151,9 @@ export class NodeJsMutationEmulator {
     }
   }
 
-  private cycleDirtyCheckNodeValue(target: Node, previous:Node ) {
+  _cycleDirtyCheckNodeValue(target: Node, previous:Node ) {
     if (target.nodeValue != previous.nodeValue) {
-        let mutation = <MutationRecord>{
+        let mutation = {
           target: target,
           type: "characterData",
           addedNodes: {},
@@ -168,13 +168,13 @@ export class NodeJsMutationEmulator {
         this.registerMutation(mutation);
     }
   }
-  
-  private cycleDirtyCheckChildList(target: Node, previous:Node ) {
+
+  _cycleDirtyCheckChildList(target: Node, previous:Node ) {
     if(!target.nodeValue)
         return;
-  }  
+  }
 
-  private findAttr(attrs: NamedNodeMap, name: string): Attr {
+  _findAttr(attrs: NamedNodeMap, name: string): Attr {
     var count = attrs.length;
 
     for (let i = 0; i < count; i++) {

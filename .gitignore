@@ -1,5 +1,6 @@
-**/node_modules
-**/jspm_packages
-**/*.map
-spec/**/*.js
-dist/
+node_modules
+jspm_packages
+bower_components
+.idea
+.DS_STORE
+build/reports

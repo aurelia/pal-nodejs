@@ -1,4 +1,4 @@
-import {initialize} from '../source/index'
+import {initialize} from '../src/index'
 import {PLATFORM} from 'aurelia-pal';
 
 initialize();

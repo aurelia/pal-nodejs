@@ -1,0 +1,25 @@
+{
+  "name": "aurelia-pal-nodejs",
+  "version": "0.1.0",
+  "description": "The Node.js-specific implementation of Aurelia's platform abstraction layer.",
+  "keywords": [
+    "aurelia",
+    "pal",
+    "nodejs"
+  ],
+  "homepage": "http://aurelia.io",
+  "main": "dist/commonjs/aurelia-pal-nodejs.js",
+  "moduleType": "node",
+  "license": "MIT",
+  "authors": [
+    "Rob Eisenberg <rob@bluespire.com> (http://robeisenberg.com/)"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/aurelia/pal-nodejs"
+  },
+  "dependencies": {
+    "aurelia-pal": "^1.0.0",
+    "jsdom": "^9.2.1"
+  }
+}

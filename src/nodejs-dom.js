@@ -8,12 +8,12 @@ import {NodeJsMutationObserver} from './nodejs-mutation-observer';
 */
 export class NodeJsDom implements IDom {
 
-  public mutationEmulator: NodeJsMutationEmulator;
+  mutationEmulator: NodeJsMutationEmulator;
 
-  constructor(public global: IGlobal) {
+  constructor(global: IGlobal) {
 
-    this.Element = (<any>global).Element;
-    this.SVGElement = (<any>global).SVGElement;
+    this.Element = global.Element;
+    this.SVGElement = global.SVGElement;
     this.mutationEmulator = new NodeJsMutationEmulator();
   }
 
@@ -42,7 +42,7 @@ export class NodeJsDom implements IDom {
     return this.global.document.createDocumentFragment();
   }
   createMutationObserver(callback: (changes: MutationRecord[], instance: MutationObserver) => void): MutationObserver {
-    return (<any>this.global.window).MutationObserver || (this.mutationEmulator != null) ? new NodeJsMutationObserver(this.mutationEmulator, callback) : null;
+    return (this.global.window).MutationObserver || (this.mutationEmulator != null) ? new NodeJsMutationObserver(this.mutationEmulator, callback) : null;
   }
   createCustomEvent(eventType: string, options: Object): CustomEvent {
     return new this.global.CustomEvent(eventType, options);

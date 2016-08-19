@@ -1,4 +1,4 @@
-import {initialize} from '../source/index'
+import {initialize} from '../src/index'
 import {DOM} from 'aurelia-pal';
 import {jsdom} from 'jsdom';
 

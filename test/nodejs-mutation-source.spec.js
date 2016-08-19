@@ -1,5 +1,5 @@
-import {NodeJsMutationEmulator} from '../source/nodejs-mutation-emulator';
-import {IObserver} from '../source/observer';
+import {NodeJsMutationEmulator} from '../src/nodejs-mutation-emulator';
+import {IObserver} from '../src/observer';
 import {jsdom} from 'jsdom';
 
 describe("Mutation Source", function () {
@@ -8,18 +8,18 @@ describe("Mutation Source", function () {
       var source = new NodeJsMutationEmulator(0);
       var dom = jsdom(undefined);
 
-      let observer = <IObserver>{
+      let observer = {
       }
 
       var target = dom.createElement("div");
 
       target.setAttribute("foo", "moo");
 
-      var callback = (records: MutationRecord[]) => {
+      var callback = (records) => {
         wasCalled = true;
       }
 
-      source.registerObserver(<IObserver>{
+      source.registerObserver({
         target: target,
         callback: callback
       });
@@ -32,7 +32,7 @@ describe("Mutation Source", function () {
     it("does raise mutation after attribute is changed", function () {
       var source = new NodeJsMutationEmulator(0);
       var dom = jsdom(undefined);
-      let observer = <IObserver>{}
+      let observer = {}
 
       var target = dom.createElement("div");
 
@@ -40,11 +40,11 @@ describe("Mutation Source", function () {
 
       var wasCalled;
 
-      var callback = (records: MutationRecord[]) => {
+      var callback = (records) => {
         wasCalled = true;
       }
 
-      source.registerObserver(<IObserver>{
+      source.registerObserver({
         target: target,
         callback: callback
       });
@@ -52,20 +52,20 @@ describe("Mutation Source", function () {
       wasCalled = false;
       source.cycle();
       expect(wasCalled).toBe(false);
-      
-      wasCalled = false;      
+
+      wasCalled = false;
       target.setAttribute("foo", "boo");
       source.cycle();
-      expect(wasCalled).toBe(true);    
+      expect(wasCalled).toBe(true);
 
-      wasCalled = false;   
+      wasCalled = false;
       source.cycle();
-      expect(wasCalled).toBe(false);   
+      expect(wasCalled).toBe(false);
 
-      wasCalled = false;      
+      wasCalled = false;
       target.setAttribute("foo", "choo");
       source.cycle();
-      expect(wasCalled).toBe(true);   
+      expect(wasCalled).toBe(true);
 
     });
   });
@@ -74,15 +74,15 @@ describe("Mutation Source", function () {
     it("doesn't raise mutation if nodeValue not changed", function () {
       var source = new NodeJsMutationEmulator(0);
       var dom = jsdom(undefined);
-      let observer = <IObserver>{}
+      let observer = {}
 
       var target = dom.createTextNode("foo");
 
-      var callback = (records: MutationRecord[]) => {
+      var callback = (records) => {
         wasCalled = true;
       }
 
-      source.registerObserver(<IObserver>{
+      source.registerObserver({
         target: target,
         callback: callback
       });
@@ -95,16 +95,16 @@ describe("Mutation Source", function () {
     it("does raise mutation after nodeValue is changed", function () {
       var source = new NodeJsMutationEmulator(0);
       var dom = jsdom(undefined);
-      let observer = <IObserver>{}
+      let observer = {}
 
       var target = dom.createTextNode("foo");
 
       var wasCalled;
-      var callback = (records: MutationRecord[]) => {
+      var callback = (records) => {
         wasCalled = true;
       }
 
-      source.registerObserver(<IObserver>{
+      source.registerObserver({
         target: target,
         callback: callback
       });
@@ -112,20 +112,20 @@ describe("Mutation Source", function () {
       wasCalled = false;
       source.cycle();
       expect(wasCalled).toBe(false);
-      
-      wasCalled = false;      
+
+      wasCalled = false;
       target.nodeValue = "boo";
       source.cycle();
-      expect(wasCalled).toBe(true);    
+      expect(wasCalled).toBe(true);
 
-      wasCalled = false;   
+      wasCalled = false;
       source.cycle();
-      expect(wasCalled).toBe(false);   
+      expect(wasCalled).toBe(false);
 
-      wasCalled = false;      
+      wasCalled = false;
       target.nodeValue = "choo";
       source.cycle();
-      expect(wasCalled).toBe(true);   
+      expect(wasCalled).toBe(true);
 
     });
   });

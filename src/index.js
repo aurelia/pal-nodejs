@@ -85,7 +85,7 @@ function ensurePerformance(window) {
   if (window.performance === undefined) {
     window.performance = {};
   }
-  
+
   if (window.performance.now === undefined) {
     let nowOffset = Date.now();
 
