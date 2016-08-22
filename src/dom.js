@@ -6,10 +6,10 @@ export interface IDom {
   * The global DOM Element type.
   */
   Element: { new (): Element };
- 
+
   /**
   * The global DOM SVGElement type.
-  */ 
+  */
   SVGElement: { new (): SVGElement };
   /**
   * A key representing a DOM boundary.
@@ -142,4 +142,3 @@ export interface IDom {
   */
   injectStyles(styles: string, destination?: Element, prepend?:boolean): Node;
 }
-
