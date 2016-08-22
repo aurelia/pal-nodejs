@@ -1,7 +1,7 @@
 var path = require('path');
 var paths = require('./paths');
 
-exports.base = function() {
+exports.base = function(isTest) {
   var config = {
     filename: '',
     filenameRelative: '',
@@ -18,7 +18,7 @@ exports.base = function() {
       'transform-decorators-legacy',
     ]
   };
-  if (!paths.useTypeScriptForDTS) {
+  if (!paths.useTypeScriptForDTS && !isTest) {
     config.plugins.push(
       ['babel-dts-generator', {
           packageName: paths.packageName,
@@ -61,5 +61,14 @@ exports.es2015 = function() {
 exports['native-modules'] = function() {
   var options = exports.base();
   options.presets[0] = 'es2015-loose-native-modules';
+  return options;
+}
+
+exports.test = function() {
+  var baseOptions = exports.base(true);
+  var options = {
+    presets: baseOptions.presets,
+    plugins: baseOptions.plugins
+  };
   return options;
 }

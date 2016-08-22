@@ -11,7 +11,7 @@ export class NodeJsDom implements IDom {
   mutationEmulator: NodeJsMutationEmulator;
 
   constructor(global: IGlobal) {
-
+    this.global = global;
     this.Element = global.Element;
     this.SVGElement = global.SVGElement;
     this.mutationEmulator = new NodeJsMutationEmulator();

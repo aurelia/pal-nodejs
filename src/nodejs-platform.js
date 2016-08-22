@@ -5,10 +5,11 @@ import {IGlobal} from './global';
 export class NodeJsPlatform implements IPlatform {
 
   constructor(global: IGlobal) {
-    this.performance = this.global.performance;
-    this.location = this.global.location;
-    this.history = this.global.history;
-    this.XMLHttpRequest = this.global.XMLHttpRequest;
+    this.global = global;
+    this.performance = global.performance;
+    this.location = global.location;
+    this.history = global.history;
+    this.XMLHttpRequest = global.XMLHttpRequest;
   }
 
   /**

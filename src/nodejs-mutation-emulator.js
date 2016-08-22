@@ -133,7 +133,7 @@ export class NodeJsMutationEmulator {
 
       let old = attrOld.item(i);
 
-      if (!this.findAttr(attrNew, old.name)) {
+      if (!this._findAttr(attrNew, old.name)) {
         let mutation = {
           target: target,
           type: "attributes",

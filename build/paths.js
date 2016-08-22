@@ -13,7 +13,8 @@ module.exports = {
   doc:'./doc',
   e2eSpecsSrc: 'test/e2e/src/*.js',
   e2eSpecsDist: 'test/e2e/dist/',
-  packageName: pkg.name
+  packageName: pkg.name,
+  specsSrc: 'test/**/*.spec.js'
 };var path = require('path');
 var fs = require('fs');
 
@@ -34,6 +35,7 @@ var paths = {
   e2eSpecsSrc: 'test/e2e/src/*.js',
   e2eSpecsDist: 'test/e2e/dist/',
   packageName: pkg.name,
+  specsSrc: 'test/**/*.spec.js',
   ignore: [],
   useTypeScriptForDTS: false,
   importsToAdd: [],
