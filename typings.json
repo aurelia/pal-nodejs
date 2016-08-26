@@ -1,8 +1,7 @@
 {
   "name": "aurelia-pal-nodejs",
-  "dependencies": {},
-  "globalDependencies": {
-    "jasmine": "registry:dt/jasmine#2.2.0+20160505161446",
-    "node": "registry:env/node#6.0.0+20160610031852"
+  "main": "dist/aurelia-pal-nodejs.d.ts",
+  "dependencies": {
+    "aurelia-pal": "github:aurelia/pal"
   }
 }

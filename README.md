@@ -31,4 +31,4 @@ To build the code, follow these steps.
   ```shell
   npm test
   ```
-5. You will find the compiled code in the `dist` folder, available in CommonJS module format. 
+5. You will find the compiled code in the `dist` folder, available in AMD, CommonJS and ES6 module formats.
