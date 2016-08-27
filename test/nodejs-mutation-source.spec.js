@@ -1,133 +1,146 @@
-import {NodeJsMutationEmulator} from '../src/nodejs-mutation-emulator';
-import {IObserver} from '../src/observer';
+import {initialize} from '../src/index'
 import {jsdom} from 'jsdom';
+import {MutationObserver} from '../src/nodejs-mutation-observer';
 
-describe("Mutation Source", function () {
-  describe("Attributes", function () {
-    it("doesn't raise mutation if attribute not changed", function () {
-      var source = new NodeJsMutationEmulator(0);
-      var dom = jsdom(undefined);
+initialize();
 
-      let observer = {
-      }
+describe("Mutation Observer", () => {
+  let observer, dom, document;
+  const noop = () => {};
 
-      var target = dom.createElement("div");
-
-      target.setAttribute("foo", "moo");
-
-      var callback = (records) => {
-        wasCalled = true;
-      }
-
-      source.registerObserver({
-        target: target,
-        callback: callback
-      });
-
-      var wasCalled = false;
-      source.cycle();
-      expect(wasCalled).toBe(false);
-    });
-
-    it("does raise mutation after attribute is changed", function () {
-      var source = new NodeJsMutationEmulator(0);
-      var dom = jsdom(undefined);
-      let observer = {}
-
-      var target = dom.createElement("div");
-
-      target.setAttribute("foo", "moo");
-
-      var wasCalled;
-
-      var callback = (records) => {
-        wasCalled = true;
-      }
-
-      source.registerObserver({
-        target: target,
-        callback: callback
-      });
-
-      wasCalled = false;
-      source.cycle();
-      expect(wasCalled).toBe(false);
-
-      wasCalled = false;
-      target.setAttribute("foo", "boo");
-      source.cycle();
-      expect(wasCalled).toBe(true);
-
-      wasCalled = false;
-      source.cycle();
-      expect(wasCalled).toBe(false);
-
-      wasCalled = false;
-      target.setAttribute("foo", "choo");
-      source.cycle();
-      expect(wasCalled).toBe(true);
-
-    });
+  beforeEach(() => {
+    dom = jsdom(undefined, {}).defaultView;
+    document = dom.document;
+    observer = new MutationObserver(dom, noop).mutationObserver;
   });
 
-  describe("Node Value", function () {
-    it("doesn't raise mutation if nodeValue not changed", function () {
-      var source = new NodeJsMutationEmulator(0);
-      var dom = jsdom(undefined);
-      let observer = {}
+  afterEach(() => {
+    observer.disconnect();
+  });
 
-      var target = dom.createTextNode("foo");
+  it('should be defined', () => {
+    expect(observer).toBeDefined();
+  });
 
-      var callback = (records) => {
-        wasCalled = true;
-      }
+  it('should not detect no changes', () => {
+    const target = document.createElement('div');
 
-      source.registerObserver({
-        target: target,
-        callback: callback
-      });
+    target.setAttribute('attribute', 'attribute');
 
-      var wasCalled = false;
-      source.cycle();
-      expect(wasCalled).toBe(false);
+    observer.observe(target, {
+      attributes: true,
+      attributeOldValue: true
     });
 
-    it("does raise mutation after nodeValue is changed", function () {
-      var source = new NodeJsMutationEmulator(0);
-      var dom = jsdom(undefined);
-      let observer = {}
+    let records = observer.takeRecords();
 
-      var target = dom.createTextNode("foo");
+    expect(records.length).toBe(0);
 
-      var wasCalled;
-      var callback = (records) => {
-        wasCalled = true;
-      }
+    target.setAttribute('attribute', 'attribute');
 
-      source.registerObserver({
-        target: target,
-        callback: callback
-      });
+    records = observer.takeRecords();
 
-      wasCalled = false;
-      source.cycle();
-      expect(wasCalled).toBe(false);
+    expect(records.length).toBe(0);
+  });
 
-      wasCalled = false;
-      target.nodeValue = "boo";
-      source.cycle();
-      expect(wasCalled).toBe(true);
+  it('should detect changes for a single element', () => {
+    const target = document.createElement('div');
 
-      wasCalled = false;
-      source.cycle();
-      expect(wasCalled).toBe(false);
+    target.setAttribute('class', 100);
 
-      wasCalled = false;
-      target.nodeValue = "choo";
-      source.cycle();
-      expect(wasCalled).toBe(true);
-
+    observer.observe(target, {
+      attributes: true,
+      attributeOldValue: true
     });
+
+    target.removeAttribute('class');
+
+    const records = observer.takeRecords();
+
+    expect(records.length).toBe(1);
+    expect(records[0].oldValue).toBe('100');
+  });
+
+  it('should detect changes for a parents elements', () => {
+    const target = document.createElement('div');
+    const child = document.createElement('div');
+
+    target.setAttribute('id', 'parent');
+    child.setAttribute('id', 'child');
+    target.appendChild(child);
+
+    observer.observe(target, {
+      attributes: true,
+      childList: true
+    });
+
+    target.removeAttribute('id');
+
+    const records = observer.takeRecords();
+
+    expect(records.length).toBe(1);
+    expect(records[0].oldValue).toBe('parent');
+  });
+
+  it('should detect removing child nodes', () => {
+    const target = document.createElement('div');
+    const child = document.createTextNode(`I'm a text node`);
+
+    target.setAttribute('id', 'parent');
+    target.appendChild(child);
+
+    observer.observe(target, {
+      attributes: true,
+      childList: true
+    });
+
+    target.removeChild(child);
+
+    const records = observer.takeRecords();
+
+    expect(records.length).toBe(1);
+    expect(records[0].removedNodes).toBeDefined();
+  });
+
+  it('should detect both parent and child changes', () => {
+    const target = document.createElement('div');
+    const child = document.createElement('div');
+
+    target.setAttribute('id', 'parent');
+    child.setAttribute('id', 'child');
+
+    target.appendChild(child);
+
+    observer.observe(target, {
+      attributes: true,
+      childList: true,
+      attributeOldValue: true
+    });
+
+    target.setAttribute('id', 'changedParent');
+    child.setAttribute('id', 'changedChild');
+
+    const records = observer.takeRecords();
+
+    expect(records.length).toBe(2);
+    expect(records[0].oldValue).toBe('parent');
+    expect(records[1].oldValue).toBe('child');
+  });
+
+  xit('should detect changes for a single text node', () => {
+    const textNode = document.createTextNode(`I'm a text node`);
+    console.dir(textNode);
+
+    observer.observe(textNode, {
+      attributes: true,
+      attributeOldValue: true
+    });
+
+    textNode.innerText = 'class';
+
+    const records = observer.takeRecords();
+
+    expect(records.length).toBe(1);
+    expect(records[0].oldValue).toBe('100');
   });
 });
-

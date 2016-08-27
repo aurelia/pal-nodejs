@@ -1,7 +1,7 @@
 import {initializePAL} from 'aurelia-pal';
 import {IPlatform} from './platform';
 import {IGlobal} from './global';
-import {NodeJsMutationObserver} from './nodejs-mutation-observer';
+import {MutationObserver} from './nodejs-mutation-observer';
 import {NodeJsPlatform} from './nodejs-platform';
 import {NodeJsFeature} from './nodejs-feature';
 import {NodeJsDom} from './nodejs-dom';
@@ -19,12 +19,12 @@ export function initialize(): void {
   isInitialized = true;
 
   let _global: IGlobal = jsdom(undefined, {}).defaultView;
-
   ensurePerformance(_global.window);
 
   let _platform = new NodeJsPlatform(_global);
   let _dom = new NodeJsDom(_global);
   let _feature = new NodeJsFeature(_global);
+  let _mutationObserver = new MutationObserver(_global, () => {}).mutationObserver;
 
   initializePAL((platform, feature, dom) => {
     Object.assign(platform, _platform);
@@ -35,6 +35,9 @@ export function initialize(): void {
 
     Object.assign(feature, _feature);
     Object.setPrototypeOf(feature, _feature.constructor.prototype);
+
+    Object.assign(MutationObserver, _mutationObserver);
+    Object.setPrototypeOf(MutationObserver, _mutationObserver.constructor.prototype);
 
     (function(global) {
       global.console = global.console || {};
