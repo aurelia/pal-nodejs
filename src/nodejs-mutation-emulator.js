@@ -1,6 +1,6 @@
 import {EventEmitter} from 'events';
 import {IObserver} from './observer';
-import {IDisposable} from './disposeable';
+import {IDisposable} from './disposable';
 
 export class NodeJsMutationEmulator {
   cycleMutations: MutationRecord[];
