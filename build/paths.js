@@ -43,7 +43,7 @@ var paths = {
 };
 
 paths.files = [
-'disposeable.js',
+'disposable.js',
 'dom.js',
 'feature.js',
 'global.js',
