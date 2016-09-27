@@ -24,7 +24,7 @@ export function initialize(): void {
   let _platform = new NodeJsPlatform(_global);
   let _dom = new NodeJsDom(_global);
   let _feature = new NodeJsFeature(_global);
-  let _mutationObserver = new MutationObserver(_global, () => {}).mutationObserver;
+  let _mutationObserver = new MutationObserver(_global, () => {});
 
   initializePAL((platform, feature, dom) => {
     Object.assign(platform, _platform);
