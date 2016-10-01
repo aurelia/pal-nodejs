@@ -248,19 +248,18 @@ describe("mutation-observer", () => {
     expect(records[1].oldValue).toBe('child');
   });
 
-  xit('should detect changes for a single text node', () => {
-    const textNode = document.createTextNode(`I'm a text node`);
+  it('should detect changes for a single text node', () => {
+    const textNode = document.createTextNode(`Foo`);
 
     observer.observe(textNode, {
-      attributes: true,
-      attributeOldValue: true
+      characterData: true
     });
 
-    textNode.innerText = 'class';
+    textNode.nodeValue = 'Bar';
 
     const records = observer.takeRecords();
 
     expect(records.length).toBe(1);
-    expect(records[0].oldValue).toBe('100');
+    expect(records[0].oldValue).toBe('Foo');
   });
 });
