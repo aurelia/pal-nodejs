@@ -1,8 +1,7 @@
 import { buildPal } from '../src/nodejs-pal-builder';
 
-describe("mutation-observer", () => {
+describe("MutationObserver", () => {
   it("attribute changes trigger mutation event", function (done) {
-
     var pal = buildPal();
     var dom = pal.dom;
     var document = pal.global.window.document;
@@ -11,24 +10,52 @@ describe("mutation-observer", () => {
     div.setAttribute('a', 'A');
 
     var observer = dom.createMutationObserver((changes) => {
-      try { 
+      try {
         expect(changes.length).toBe(1);
         expect(changes[0].attributeName).toBe("a");
         expect(changes[0].oldValue).toBe("A");
       }
-      catch (err) { 
-        fail(); 
+      catch (err) {
+        fail();
       }
-      finally { 
+      finally {
         observer.disconnect();
-        done(); 
-      }      
+        done();
+      }
     });
 
     observer.observe(div, {
       attributes: true
+      
     });
 
     div.setAttribute('a', 'B');
+  });
+
+  it("text changes trigger mutation event", function (done) {
+    var pal = buildPal();
+    var dom = pal.dom;
+    var document = pal.global.window.document;
+    var text = document.createTextNode("A");
+
+    var observer = dom.createMutationObserver((changes) => {
+      try {
+        expect(changes.length).toBe(1);
+        expect(changes[0].oldValue).toBe("A");
+      }
+      catch (err) {
+        fail();
+      }
+      finally {
+        observer.disconnect();
+        done();
+      }
+    });
+
+    observer.observe(text, {
+      characterData: true
+    });
+
+    text.nodeValue = "B";
   });
 });
