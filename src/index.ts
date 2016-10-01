@@ -1,13 +1,8 @@
 import { initializePAL } from 'aurelia-pal';
-import { IPlatform } from './platform';
-import { IGlobal } from './global';
-import { NodeJsMutationObserver } from './nodejs-mutation-observer';
-import { NodeJsPlatform } from './nodejs-platform';
-import { NodeJsFeature } from './nodejs-feature';
-import { NodeJsDom } from './nodejs-dom';
-import { jsdom } from 'jsdom';
+import { buildPal } from './nodejs-pal-builder';
 
 let isInitialized = false;
+
 /**
 * Initializes the PAL with the Browser-targeted implementation.
 */
@@ -18,23 +13,17 @@ export function initialize(): void {
 
   isInitialized = true;
 
-  var _global: IGlobal = jsdom(undefined, {}).defaultView;
-
-  ensurePerformance(_global.window);
-
-  var _platform = new NodeJsPlatform(_global);
-  var _dom = new NodeJsDom(_global);
-  var _feature = new NodeJsFeature(_global);
+  let pal = buildPal();
 
   initializePAL((platform, feature, dom) => {
-    Object.assign(platform, _platform);
-    Object.setPrototypeOf(platform, _platform.constructor.prototype);
+    Object.assign(platform, pal.platform);
+    Object.setPrototypeOf(platform, pal.platform.constructor.prototype);
 
-    Object.assign(dom, _dom);
-    Object.setPrototypeOf(dom, _dom.constructor.prototype);
+    Object.assign(dom, pal.dom);
+    Object.setPrototypeOf(dom, pal.dom.constructor.prototype);
 
-    Object.assign(feature, _feature);
-    Object.setPrototypeOf(feature, _feature.constructor.prototype);
+    Object.assign(feature, pal.feature);
+    Object.setPrototypeOf(feature, pal.feature.constructor.prototype);
 
     (function (global) {
       global.console = global.console || {};
@@ -59,42 +48,23 @@ export function initialize(): void {
 
     Object.defineProperty(dom, 'title', {
       get: function () {
-        return _global.document.title;
+        return pal.global.document.title;
       },
       set: function (value) {
-        _global.document.title = value;
+        pal.global.document.title = value;
       }
     });
 
     Object.defineProperty(dom, 'activeElement', {
       get: function () {
-        return _global.document.activeElement;
+        return pal.global.document.activeElement;
       }
     });
 
     Object.defineProperty(platform, 'XMLHttpRequest', {
       get: function () {
-        return _global.XMLHttpRequest;
+        return pal.global.XMLHttpRequest;
       }
     });
   });
-}
-
-function ensurePerformance(window) {
-
-  if (window.performance === undefined) {
-    window.performance = {};
-  }
-
-  if (window.performance.now === undefined) {
-    let nowOffset = Date.now();
-
-    //if (performance.timing && performance.timing.navigationStart) {
-    //  nowOffset = performance.timing.navigationStart;
-    //}
-
-    window.performance.now = function now() {
-      return Date.now() - nowOffset;
-    };
-  }
 }
