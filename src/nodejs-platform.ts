@@ -1,17 +1,20 @@
-import {IPerformance} from './performance';
+import { IPlatform } from './platform';
+import { IPerformance } from './performance';
+import { IGlobal } from './global';
 
-/**
-* Represents the core APIs of the runtime environment.
-*/
-export interface IPlatform {
-  /**
-  * The runtime environment's global.
-  */
-  global: any,
+export class NodeJsPlatform implements IPlatform {
+
+  constructor(public global: IGlobal) {
+    this.performance = this.global.performance;
+    this.location = this.global.location;
+    this.history = this.global.history;
+    this.XMLHttpRequest = this.global.XMLHttpRequest;
+  }
+
   /**
   * A function wich does nothing.
   */
-  noop: Function;
+  noop: Function = () => { };
   /**
   * The runtime's location API.
   */
@@ -29,26 +32,36 @@ export interface IPlatform {
   * @param callback The function to call.
   * @return A long integer value, the request id, that uniquely identifies the entry in the callback list.
   */
-  requestAnimationFrame(callback: (animationFrameStart: number) => void): number;
+  requestAnimationFrame(callback: (animationFrameStart: number) => void): number {
+    return this.global.requestAnimationFrame(callback);
+  }
+
   /**
   * Iterate all modules loaded by the script loader.
   * @param callback A callback that will receive each module id along with the module object. Return true to end enumeration.
   */
-  eachModule(callback: (key: string, value: Object) => boolean): void;
+  eachModule(callback: (key: string, value: Object) => boolean): void {
+    //TODO: What is this? 
+  }
   /**
   * Add a global event listener.
   * @param eventName A string representing the event type to listen for.
   * @param callback The function that receives a notification when an event of the specified type occurs.
   * @param capture If true, useCapture indicates that the user wishes to initiate capture.
   */
-  addEventListener(eventName: string, callback: Function, capture?: boolean): void;
+  addEventListener(eventName: string, callback: Function, capture?: boolean): void {
+    this.global.addEventListener(eventName, <any>callback, capture);
+  }
   /**
   * Remove a global event listener.
   * @param eventName A string representing the event type to listen for.
   * @param callback The function to remove from the event.
   * @param capture Specifies whether the listener to be removed was registered as a capturing listener or not.
   */
-  removeEventListener(eventName: string, callback: Function, capture?: boolean): void;
+  removeEventListener(eventName: string, callback: Function, capture?: boolean): void {
+    this.global.removeEventListener(eventName, <any>callback, capture);
+  }
+
   /**
   * The runtime's XMLHttpRequest API.
   */

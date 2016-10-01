@@ -4,8 +4,8 @@ var typedoc = require('gulp-typedoc');
 var runSequence = require('run-sequence');
 var through2 = require('through2');
 
-gulp.task('doc-generate', function(){
-  return gulp.src([paths.output + paths.packageName + '.d.ts'])
+gulp.task('doc:generate', function(){
+  return gulp.src([paths.output + 'index.d.ts'])
     .pipe(typedoc({
       target: 'es6',
       includeDeclarations: true,
@@ -19,7 +19,7 @@ gulp.task('doc-generate', function(){
     }));
 });
 
-gulp.task('doc-shape', function(){
+gulp.task('doc:shape', function(){
   return gulp.src([paths.doc + '/api.json'])
     .pipe(through2.obj(function(file, enc, callback) {
       var json = JSON.parse(file.contents.toString('utf8')).children[0];
@@ -39,8 +39,8 @@ gulp.task('doc-shape', function(){
 
 gulp.task('doc', function(callback){
   return runSequence(
-    'doc-generate',
-    'doc-shape',
+    'doc:generate',
+    'doc:shape',
     callback
   );
 });

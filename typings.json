@@ -1,7 +1,0 @@
-{
-  "name": "aurelia-pal-nodejs",
-  "main": "dist/aurelia-pal-nodejs.d.ts",
-  "dependencies": {
-    "aurelia-pal": "github:aurelia/pal"
-  }
-}

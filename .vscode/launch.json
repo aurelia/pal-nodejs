@@ -1,0 +1,28 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Launch Tests",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceRoot}/node_modules/gulp/bin/gulp.js",
+      "stopOnEntry": false,
+      "args": [
+        "dev:debug"
+      ],
+      "cwd": "${workspaceRoot}",
+      "preLaunchTask": "dev:pre-debug",
+      "internalConsoleOptions": "openOnSessionStart",
+      "runtimeExecutable": null,
+      "runtimeArgs": [
+        "--nolazy"
+      ],
+      "env": {
+        "NODE_ENV": "development"
+      },
+      "externalConsole": false,
+      "sourceMaps": true,
+      "outDir": "${workspaceRoot}/dist"
+    }  
+  ]
+}

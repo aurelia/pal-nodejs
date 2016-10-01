@@ -1,11 +1,11 @@
-import {initializePAL} from 'aurelia-pal';
-import {IPlatform} from './platform';
-import {IGlobal} from './global';
-import {MutationObserver} from './nodejs-mutation-observer';
-import {NodeJsPlatform} from './nodejs-platform';
-import {NodeJsFeature} from './nodejs-feature';
-import {NodeJsDom} from './nodejs-dom';
-import {jsdom} from 'jsdom';
+import { initializePAL } from 'aurelia-pal';
+import { IPlatform } from './platform';
+import { IGlobal } from './global';
+import { NodeJsMutationObserver } from './nodejs-mutation-observer';
+import { NodeJsPlatform } from './nodejs-platform';
+import { NodeJsFeature } from './nodejs-feature';
+import { NodeJsDom } from './nodejs-dom';
+import { jsdom } from 'jsdom';
 
 let isInitialized = false;
 /**
@@ -18,13 +18,13 @@ export function initialize(): void {
 
   isInitialized = true;
 
-  let _global: IGlobal = jsdom(undefined, {}).defaultView;
+  var _global: IGlobal = jsdom(undefined, {}).defaultView;
+
   ensurePerformance(_global.window);
 
-  let _platform = new NodeJsPlatform(_global);
-  let _dom = new NodeJsDom(_global);
-  let _feature = new NodeJsFeature(_global);
-  let _mutationObserver = new MutationObserver(_global, () => {}).mutationObserver;
+  var _platform = new NodeJsPlatform(_global);
+  var _dom = new NodeJsDom(_global);
+  var _feature = new NodeJsFeature(_global);
 
   initializePAL((platform, feature, dom) => {
     Object.assign(platform, _platform);
@@ -36,16 +36,13 @@ export function initialize(): void {
     Object.assign(feature, _feature);
     Object.setPrototypeOf(feature, _feature.constructor.prototype);
 
-    Object.assign(MutationObserver, _mutationObserver);
-    Object.setPrototypeOf(MutationObserver, _mutationObserver.constructor.prototype);
-
-    (function(global) {
+    (function (global) {
       global.console = global.console || {};
       let con = global.console;
       let prop;
       let method;
       let empty = {};
-      let dummy = function() { };
+      let dummy = function () { };
       let properties = 'memory'.split(',');
       let methods = ('assert,clear,count,debug,dir,dirxml,error,exception,group,' +
         'groupCollapsed,groupEnd,info,log,markTimeline,profile,profiles,profileEnd,' +
@@ -55,28 +52,28 @@ export function initialize(): void {
     })(platform.global);
 
     if (platform.global.console && typeof console.log === 'object') {
-      ['log', 'info', 'warn', 'error', 'assert', 'dir', 'clear', 'profile', 'profileEnd'].forEach(function(method) {
+      ['log', 'info', 'warn', 'error', 'assert', 'dir', 'clear', 'profile', 'profileEnd'].forEach(function (method) {
         console[method] = this.bind(console[method], console);
       }, Function.prototype.call);
     }
 
     Object.defineProperty(dom, 'title', {
-      get: function() {
+      get: function () {
         return _global.document.title;
       },
-      set: function(value) {
+      set: function (value) {
         _global.document.title = value;
       }
     });
 
     Object.defineProperty(dom, 'activeElement', {
-      get: function() {
+      get: function () {
         return _global.document.activeElement;
       }
     });
 
     Object.defineProperty(platform, 'XMLHttpRequest', {
-      get: function() {
+      get: function () {
         return _global.XMLHttpRequest;
       }
     });
@@ -84,6 +81,7 @@ export function initialize(): void {
 }
 
 function ensurePerformance(window) {
+
   if (window.performance === undefined) {
     window.performance = {};
   }

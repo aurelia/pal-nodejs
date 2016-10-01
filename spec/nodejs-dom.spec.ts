@@ -1,6 +1,6 @@
-import {initialize} from '../src/index'
-import {DOM} from 'aurelia-pal';
-import {jsdom} from 'jsdom';
+import { initialize } from '../src/index';
+import { DOM } from 'aurelia-pal';
+import { jsdom } from 'jsdom';
 
 initialize();
 
@@ -27,10 +27,8 @@ describe('NodeJs Dom', () => {
     expect(elmt.tagName).toBe("DIV");
   });
 
-
   it('createTextNode is defined', () => {
     expect(DOM.createTextNode).toBeDefined();
-
   });
 
   it('createTextNode creates valid text node', () => {
@@ -81,7 +79,7 @@ describe('NodeJs Dom', () => {
 
     let event = DOM.createCustomEvent("Foo", { bubbles: true, cancelable: false, detail: {} });
 
-    elmt.addEventListener("Foo", () => { wasCalled = true }, true);
+    elmt.addEventListener("Foo", () => { wasCalled = true; }, true);
     elmt.dispatchEvent(event);
 
     expect(wasCalled).toBeTruthy();

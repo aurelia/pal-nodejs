@@ -1,4 +1,3 @@
-require("babel-register")(require('../babel-options').test());
 var gulp = require('gulp');
 var jasmine = require('gulp-jasmine');
 var paths = require('../paths');
@@ -7,8 +6,9 @@ var paths = require('../paths');
  * Run test once and exit
  */
 gulp.task('test', () => {
-  gulp.src([paths.source, paths.specsSrc])
+  return gulp.src([paths.spec + "**/*.js" ])
     .pipe(jasmine({
+      verbose: true,
       includeStackTrace: true
    }));
 });

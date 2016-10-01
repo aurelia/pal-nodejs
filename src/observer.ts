@@ -1,5 +1,5 @@
 export interface IObserver {
-  target: Node,
-  options?: MutationObserverInit,
+  target: Node;
+  options?: MutationObserverInit;
   callback: (mutations: MutationRecord[]) => void;
 }

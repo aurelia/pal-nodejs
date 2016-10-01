@@ -71,7 +71,7 @@ export interface IDom {
   * @param callback A callback that will recieve the change records with the mutations.
   * @return A MutationObservere.
   */
-  createMutationObserver(callback:(changes:MutationRecord[], instance:MutationObserver)=>void): MutationObserver;
+  createMutationObserver(callback: (changes: MutationRecord[], instance: MutationObserver) => void): MutationObserver;
   /**
   * Creates a new CustomEvent.
   * @param eventType A string representing the event type.
@@ -119,7 +119,7 @@ export interface IDom {
   * @param newNode The node to append.
   * @param parentNode The node to append to, otherwise the document.body.
   */
-  appendNode(newNode: Node, parentNode?:Node): void;
+  appendNode(newNode: Node, parentNode?: Node): void;
   /**
   * Replaces a node in the parent with a new node.
   * @param newNode The node to replace the old node with.
@@ -140,5 +140,5 @@ export interface IDom {
   * @param prepend Indicates whether or not the styles should be prepended to the destination. By default they are appended.
   * @return The Style node that was created.
   */
-  injectStyles(styles: string, destination?: Element, prepend?:boolean): Node;
+  injectStyles(styles: string, destination?: Element, prepend?: boolean): Node;
 }

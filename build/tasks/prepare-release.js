@@ -23,6 +23,7 @@ gulp.task('bump-version', function(){
 
 gulp.task('prepare-release', function(callback){
   return runSequence(
+    'format',
     'build',
     'lint',
     'bump-version',

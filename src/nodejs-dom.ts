@@ -1,25 +1,26 @@
-import {IDom} from './dom';
-import {IGlobal} from './global';
-import {NodeJsMutationEmulator} from './nodejs-mutation-emulator';
-import {NodeJsMutationObserver} from './nodejs-mutation-observer';
+import { IDom } from './dom';
+import { IGlobal } from './global';
+import { NodeJsMutationEmulator } from './nodejs-mutation-emulator';
+import { NodeJsMutationObserver } from './nodejs-mutation-observer';
 
 /**
 * Represents the core APIs of the DOM.
 */
 export class NodeJsDom implements IDom {
-  mutationEmulator: NodeJsMutationEmulator;
 
-  constructor(global: IGlobal) {
-    this.global = global;
-    this.Element = global.Element;
-    this.SVGElement = global.SVGElement;
+  public mutationEmulator: NodeJsMutationEmulator;
+
+  constructor(public global: IGlobal) {
+
+    this.Element = (<any>global).Element;
+    this.SVGElement = (<any>global).SVGElement;
     this.mutationEmulator = new NodeJsMutationEmulator();
   }
 
   Element: { new (): Element };
   SVGElement: { new (): SVGElement };
   boundary: string = 'aurelia-dom-boundary';
-  title: string = '';
+  title: string = "";
   activeElement: Element = null;
 
   addEventListener(eventName: string, callback: EventListener, capture: boolean): void {
@@ -41,7 +42,7 @@ export class NodeJsDom implements IDom {
     return this.global.document.createDocumentFragment();
   }
   createMutationObserver(callback: (changes: MutationRecord[], instance: MutationObserver) => void): MutationObserver {
-    return (this.global.window).MutationObserver || (!this.mutationEmulator) ? new NodeJsMutationObserver(this.mutationEmulator, callback) : null;
+    return (<any>this.global.window).MutationObserver || (this.mutationEmulator != null) ? new NodeJsMutationObserver(this.mutationEmulator, callback) : null;
   }
   createCustomEvent(eventType: string, options: Object): CustomEvent {
     return new this.global.CustomEvent(eventType, options);
@@ -106,7 +107,8 @@ export class NodeJsDom implements IDom {
   removeNode(node: Node, parentNode?: Node): void {
     if (node.parentNode) {
       node.parentNode.removeChild(node);
-    } else {
+    }
+    else {
       parentNode.removeChild(node);
     }
   }

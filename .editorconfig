@@ -5,8 +5,15 @@ root = true
 
 # Unix-style newlines with a newline ending every file
 [*]
+indent_style = space
+indent_size = 2
 end_of_line = lf
-insert_final_newline = true
+charset = utf-8
+trim_trailing_whitespace = false
+insert_final_newline = false
+
+[*.md]
+trim_trailing_whitespace = false
 
 # 2 space indentation
 [**.*]
