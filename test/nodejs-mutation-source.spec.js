@@ -11,7 +11,7 @@ describe("Mutation Observer", () => {
   beforeEach(() => {
     dom = jsdom(undefined, {}).defaultView;
     document = dom.document;
-    observer = new MutationObserver(dom, noop).mutationObserver;
+    observer = new MutationObserver(dom, noop);
   });
 
   afterEach(() => {
@@ -129,7 +129,6 @@ describe("Mutation Observer", () => {
 
   xit('should detect changes for a single text node', () => {
     const textNode = document.createTextNode(`I'm a text node`);
-    console.dir(textNode);
 
     observer.observe(textNode, {
       attributes: true,
