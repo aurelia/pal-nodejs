@@ -1,3 +1,9 @@
+/*
+ * Based on Shim for MutationObserver interface
+ * Author: Graeme Yeates (github.com/megawac)
+ * Repository: https://github.com/megawac/MutationObserver.js
+ */
+
 import { jsdom } from 'jsdom';
 
 export function polyfill(window) {
