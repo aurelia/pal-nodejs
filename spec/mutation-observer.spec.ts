@@ -89,4 +89,39 @@ describe("MutationObserver", () => {
 
     parent.removeChild(child);      
   });
+
+   it("subtree child-node changes trigger mutation event", function (done) {
+    var pal = buildPal();
+    var dom = pal.dom;
+    var document = pal.global.window.document;
+    var parent = document.createElement("div");
+    var child = document.createElement("p");
+    var childchild = document.createElement("h");
+
+    parent.appendChild(child);
+    child.appendChild(childchild);
+
+    var observer = dom.createMutationObserver((changes) => {
+      try {
+        expect(changes.length).toBe(1);
+        expect(changes[0].removedNodes.length).toBe(1);
+        expect(changes[0].target).toBe(child);
+        expect(changes[0].removedNodes[0]).toBe(childchild);
+      }
+      catch (err) {
+        fail();
+      }
+      finally {
+        observer.disconnect();
+        done();
+      }
+    });
+
+    observer.observe(parent, {
+      childList: true,
+      subtree: true,
+    });
+
+    child.removeChild(childchild);      
+  });
 });
