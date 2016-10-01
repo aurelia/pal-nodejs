@@ -20,6 +20,7 @@ gulp.task('build:source', function () {
   });
 
   var tsResult =
+    //hack fix for https://github.com/ivogabe/gulp-typescript/issues/422
     gulp.src([paths.source + '**/*.ts', "node_modules/@types/**/index.d.ts", "!node_modules/@types/**/node_modules/**/*.d.ts"])
       .pipe(sourcemap.init())
       .pipe(tsProject());
@@ -45,6 +46,7 @@ gulp.task('build:spec', function () {
   });
 
   var tsResult =
+    //hack fix for https://github.com/ivogabe/gulp-typescript/issues/422
     gulp.src([paths.spec + '**/*spec.ts', "node_modules/@types/**/index.d.ts", "!node_modules/@types/**/node_modules/**/index.d.ts"])
       .pipe(sourcemap.init())
       .pipe(tsProject());
