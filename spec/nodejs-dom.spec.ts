@@ -57,6 +57,10 @@ describe('NodeJs Dom', () => {
     expect(DOM.activeElement).toBeDefined();
   });
 
+  it('createMutationObserver is defined', () => {
+    expect(DOM.createMutationObserver).toBeDefined();
+  });
+
   it('createDocumentFragment is defined', () => {
     expect(DOM.createDocumentFragment).toBeDefined();
   });
