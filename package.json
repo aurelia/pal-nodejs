@@ -21,7 +21,7 @@
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "scripts": {
-    "test": "gulp build && gulp test && gulp clean:spec"
+    "test": "gulp clean && gulp build && gulp test && gulp clean:spec"
   },
   "repository": {
     "type": "git",
