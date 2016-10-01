@@ -13,6 +13,11 @@
   },
   "license": "MIT",
   "author": "Rob Eisenberg <rob@bluespire.com> (http://robeisenberg.com/)",
+  "contributors": [
+    "Meirion Hughes <crakinshot@yahoo.com> (https://github.com/MeirionHughes)",
+    "Martin Gustafsson <gusten86@gmail.com> (https://github.com/martingust)",
+    "Devan Patel (https://github.com/devanp92)"
+  ],
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "scripts": {
