@@ -1,20 +1,15 @@
 import { IDom } from './dom';
 import { IGlobal } from './global';
-import { NodeJsMutationEmulator } from './nodejs-mutation-emulator';
-import { NodeJsMutationObserver } from './nodejs-mutation-observer';
 
 /**
 * Represents the core APIs of the DOM.
 */
 export class NodeJsDom implements IDom {
 
-  public mutationEmulator: NodeJsMutationEmulator;
-
   constructor(public global: IGlobal) {
 
     this.Element = (<any>global).Element;
     this.SVGElement = (<any>global).SVGElement;
-    this.mutationEmulator = new NodeJsMutationEmulator();
   }
 
   Element: { new (): Element };
@@ -42,7 +37,7 @@ export class NodeJsDom implements IDom {
     return this.global.document.createDocumentFragment();
   }
   createMutationObserver(callback: (changes: MutationRecord[], instance: MutationObserver) => void): MutationObserver {
-    return (<any>this.global.window).MutationObserver || (this.mutationEmulator != null) ? new NodeJsMutationObserver(this.mutationEmulator, callback) : null;
+    return new ((<any>this.global.window).MutationObserver)(callback);
   }
   createCustomEvent(eventType: string, options: Object): CustomEvent {
     return new this.global.CustomEvent(eventType, options);

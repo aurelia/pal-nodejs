@@ -6,7 +6,7 @@ export class NodeJsFeature implements IFeature {
     this.shadowDOM = (<any>this.global.window).HTMLElement.prototype.attachShadow != undefined;
     this.scopedCSS = 'scoped' in this.global.document.createElement('style');
     this.htmlTemplateElement = true;
-    this.mutationObserver = false; // partial
+    this.mutationObserver = true; // partial
   }
 
   shadowDOM: boolean;
