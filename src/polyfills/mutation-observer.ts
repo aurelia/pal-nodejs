@@ -4,8 +4,6 @@
  * Repository: https://github.com/megawac/MutationObserver.js
  */
 
-import { jsdom } from 'jsdom';
-
 let _dispose = false;
 
 export function polyfill(window) {
@@ -18,30 +16,11 @@ export function disposeObservers() {
   _dispose = true;
 }
 
-let dom = jsdom(undefined, {}).defaultView;
-let document = dom.document;
-let counter = 1;
-let expando = 'mo_id';
-
-let elmt = <any>document.createElement('i');
-elmt.style.top = "0";
-let hasAttributeBug = elmt.attributes.style.value !== 'null';
-document = null;
-dom = null;
-
-// GCC hack see http:// stackoverflow.com/a/23202438/1517919
-const JSCompiler_renameProperty = a => a;
-
-const getAttributeWithStyleHack = (el, attr) => {
-  // As with getAttributeSimple there is a potential warning for custom attribtues in IE7.
-  return attr.name !== 'style' ? attr.value : el.style.cssText;
-};
-
-const getAttributeSimple = (el, attr) => attr.value;
-
-const getAttributeValue = hasAttributeBug ? getAttributeSimple : getAttributeWithStyleHack;
 
 export class Util {
+  static counter = 1;
+  static expando = 'mo_id';
+
   static clone($target, config) {
     let recurse = true; // set true so childList we'll always check the first level
     return (function copy($target) {
@@ -67,7 +46,7 @@ export class Util {
           */
           elestruct.attr = Util.reduce($target.attributes, (memo, attr) => {
             if (!config.afilter || config.afilter[attr.name]) {
-              memo[attr.name] = getAttributeValue($target, attr);
+              memo[attr.name] = attr.value;
             }
             return memo;
           }, {});
@@ -94,6 +73,7 @@ export class Util {
   * @return {number}
   */
   static indexOfCustomNode(set, $node, idx) {
+    const JSCompiler_renameProperty = a => a;
     return this.indexOf(set, $node, idx, JSCompiler_renameProperty('node'));
   }
 
@@ -105,12 +85,12 @@ export class Util {
   */
   static getElementId($ele) {
     try {
-      return $ele.id || ($ele[expando] = $ele[expando] || counter++);
+      return $ele.id || ($ele[this.expando] = $ele[this.expando] || this.counter++);
     } catch (e) { // ie <8 will throw if you set an unknown property on a text node
       try {
         return $ele.nodeValue; // naive
       } catch (shitie) { // when text node is removed: https://gist.github.com/megawac/8355978 :(
-        return counter++;
+        return this.counter++;
       }
     }
   }
@@ -286,7 +266,7 @@ export class MutationObserver {
         observer._listener(mutations, observer);
       }
       /** @private */
-      if (observer._disposed == false && _dispose == false)
+      if (observer._disposed == false)
         observer._timeout = setTimeout(check, this._period);
     };
     check();
@@ -484,7 +464,7 @@ export class MutationObserver {
       attr = attributes[i];
       name = attr.name;
       if (!filter || Util.has(filter, name)) {
-        if (getAttributeValue($target, attr) !== $oldstate[name]) {
+        if (attr.value !== $oldstate[name]) {
           // The pushing is redundant but gzips very nicely
           mutations.push(new MutationRecord({
             type: 'attributes',
