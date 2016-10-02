@@ -52,5 +52,5 @@ export interface IPlatform {
   /**
   * The runtime's XMLHttpRequest API.
   */
-  XMLHttpRequest: XMLHttpRequest;
+  XMLHttpRequest: typeof XMLHttpRequest;
 }

@@ -12,8 +12,8 @@ export class NodeJsDom implements IDom {
     this.SVGElement = (<any>global).SVGElement;
   }
 
-  Element: { new (): Element };
-  SVGElement: { new (): SVGElement };
+  Element: typeof Element;
+  SVGElement: typeof SVGElement;
   boundary: string = 'aurelia-dom-boundary';
   title: string = "";
   activeElement: Element = null;

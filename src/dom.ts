@@ -5,12 +5,12 @@ export interface IDom {
   /**
   * The global DOM Element type.
   */
-  Element: { new (): Element };
+  Element: typeof Element;
 
   /**
   * The global DOM SVGElement type.
   */
-  SVGElement: { new (): SVGElement };
+  SVGElement: typeof SVGElement;
   /**
   * A key representing a DOM boundary.
   */

@@ -65,5 +65,5 @@ export class NodeJsPlatform implements IPlatform {
   /**
   * The runtime's XMLHttpRequest API.
   */
-  XMLHttpRequest: XMLHttpRequest;
+  XMLHttpRequest: typeof XMLHttpRequest;
 }
