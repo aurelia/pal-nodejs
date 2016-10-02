@@ -1,8 +1,10 @@
 .vscode
+.github
 .idea
 *.map
 doc/
 spec/
+build/
 .editorconfig
 circle.yml
 CONTRIBUTING.md
