@@ -5,6 +5,7 @@
 doc/
 spec/
 build/
+src/
 .editorconfig
 circle.yml
 CONTRIBUTING.md
