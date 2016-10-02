@@ -145,11 +145,17 @@ export class MutationObserver {
   private _period = 30;
   private _timeout = null;
   private _disposed = false;
+  private _notifyListener = null;
 
   constructor(listener) {
     this._watched = [];
     this._listener = listener;
     this._period = 30;
+    this._notifyListener = () => { this.onNodeChange(); };
+  }
+
+  private onNodeChange() {
+    this.scheduleMutationCheck(this);
   }
 
   observe($target, config) {
@@ -164,6 +170,8 @@ export class MutationObserver {
 
       afilter: null
     };
+
+    MutationNotifier.getInstance().on("changed", this._notifyListener);
 
     let watched = this._watched;
 
@@ -187,11 +195,6 @@ export class MutationObserver {
       tar: $target,
       fn: this._createMutationSearcher($target, settings)
     });
-
-    // reconnect if not connected
-    if (!this._timeout) {
-      this._startMutationChecker(this);
-    }
   }
 
   takeRecords() {
@@ -207,6 +210,7 @@ export class MutationObserver {
 
   disconnect() {
     this._watched = []; // clear the stuff being observed
+    MutationNotifier.getInstance().removeListener("changed", this._notifyListener );
     this._disposed = true;
     clearTimeout(this._timeout); // ready for garbage collection
     this._timeout = null;
@@ -251,19 +255,17 @@ export class MutationObserver {
     };
   }
 
-  _startMutationChecker(observer) {
-    const check = () => {
-      let mutations = observer.takeRecords();
+  private scheduleMutationCheck(observer) {
+    observer._timeout = setTimeout(() => this.mutationChecker(observer), this._period);
+  }
 
-      if (mutations.length) { // fire away
-        // calling the listener with context is not spec but currently consistent with FF and WebKit
-        observer._listener(mutations, observer);
-      }
-      /** @private */
-      if (observer._disposed == false && _dispose == false)
-        observer._timeout = setTimeout(check, this._period);
-    };
-    check();
+  private mutationChecker(observer) {
+    let mutations = observer.takeRecords();
+
+    if (mutations.length) { // fire away
+      // calling the listener with context is not spec but currently consistent with FF and WebKit
+      observer._listener(mutations, observer);
+    }
   }
 
   _searchSubtree(mutations, $target, $oldstate, config) {
@@ -501,5 +503,27 @@ export class MutationRecord {
       if (Util.has(settings, prop) && data[prop] !== undefined) settings[prop] = data[prop];
     }
     return settings;
+  }
+}
+
+import { EventEmitter } from 'events';
+
+export class MutationNotifier extends EventEmitter {
+  private static _instance: MutationNotifier = null;
+
+  static getInstance() {
+    if (!MutationNotifier._instance) {
+      MutationNotifier._instance = new MutationNotifier();
+    }
+    return MutationNotifier._instance;
+  }
+
+  constructor() {
+    super();
+    this.setMaxListeners(100);
+  }
+
+  notifyChanged(node: Node) {
+    this.emit("changed", node);
   }
 }
