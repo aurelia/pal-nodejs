@@ -4,7 +4,7 @@ import { buildPal } from './nodejs-pal-builder';
 let isInitialized = false;
 
 /**
-* Initializes the PAL with the Browser-targeted implementation.
+* Initializes the PAL with the NodeJS-targeted implementation.
 */
 export function initialize(): void {
   if (isInitialized) {
