@@ -1,5 +1,6 @@
 import { initializePAL } from 'aurelia-pal';
 import { buildPal } from './nodejs-pal-builder';
+import { disposeObservers } from './polyfills/mutation-observer';
 
 let isInitialized = false;
 
@@ -67,4 +68,11 @@ export function initialize(): void {
       }
     });
   });
+}
+
+/**
+* Terminate any long-life timers 
+*/
+export function terminate(){
+  disposeObservers();
 }

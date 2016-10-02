@@ -6,10 +6,16 @@
 
 import { jsdom } from 'jsdom';
 
+let _dispose = false;
+
 export function polyfill(window) {
   if (!window.MutationObserver) {
     window.MutationObserver = MutationObserver;
   }
+}
+
+export function disposeObservers() {
+  _dispose = true;
 }
 
 let dom = jsdom(undefined, {}).defaultView;
@@ -280,7 +286,7 @@ export class MutationObserver {
         observer._listener(mutations, observer);
       }
       /** @private */
-      if (observer._disposed == false)
+      if (observer._disposed == false && _dispose == false)
         observer._timeout = setTimeout(check, this._period);
     };
     check();
