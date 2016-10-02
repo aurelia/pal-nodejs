@@ -144,11 +144,7 @@ export class MutationObserver {
     this._watched = [];
     this._listener = listener;
     this._period = 30;
-    this._notifyListener = () => { this.onNodeChange(); };
-  }
-
-  private onNodeChange() {
-    this.scheduleMutationCheck(this);
+    this._notifyListener = () => { this.scheduleMutationCheck(this); };
   }
 
   observe($target, config) {
@@ -186,7 +182,7 @@ export class MutationObserver {
 
     watched.push({
       tar: $target,
-      fn: this._createMutationSearcher($target, settings)
+      fn: this.createMutationSearcher($target, settings)
     });
   }
 
@@ -209,7 +205,7 @@ export class MutationObserver {
     this._timeout = null;
   }
 
-  _createMutationSearcher($target, config) {
+  private createMutationSearcher($target, config) {
     /** type {Elestuct} */
     let $oldstate = Util.clone($target, config); // create the cloned datastructure
 
@@ -232,12 +228,12 @@ export class MutationObserver {
 
       // Alright we check base level changes in attributes... easy
       if (config.attr && $oldstate.attr) {
-        this._findAttributeMutations(mutations, $target, $oldstate.attr, config.afilter);
+        this.findAttributeMutations(mutations, $target, $oldstate.attr, config.afilter);
       }
 
       // check childlist or subtree for mutations
       if (config.kids || config.descendents) {
-        dirty = this._searchSubtree(mutations, $target, $oldstate, config);
+        dirty = this.searchSubtree(mutations, $target, $oldstate, config);
       }
 
       // reclone data structure if theres changes
@@ -261,7 +257,7 @@ export class MutationObserver {
     }
   }
 
-  _searchSubtree(mutations, $target, $oldstate, config) {
+  private searchSubtree(mutations, $target, $oldstate, config) {
     // Track if the tree is dirty and has to be recomputed (#14).
     let dirty;
     /*
@@ -299,7 +295,7 @@ export class MutationObserver {
         }
 
         // Alright we found the resorted nodes now check for other types of mutations
-        if (config.attr && oldstruct.attr) this._findAttributeMutations(mutations, $cur, oldstruct.attr, config.afilter);
+        if (config.attr && oldstruct.attr) this.findAttributeMutations(mutations, $cur, oldstruct.attr, config.afilter);
         if (config.charData && $cur.nodeType === 3 && $cur.nodeValue !== oldstruct.charData) {
           mutations.push(new MutationRecord({
             type: 'characterData',
@@ -353,7 +349,7 @@ export class MutationObserver {
         if ($cur === $old) { // expected case - optimized for this case
           // check attributes as specified by config
           if (config.attr && oldstruct.attr) {/* oldstruct.attr instead of textnode check */
-            this._findAttributeMutations(mutations, $cur, oldstruct.attr, config.afilter);
+            this.findAttributeMutations(mutations, $cur, oldstruct.attr, config.afilter);
           }
           // check character data if node is a comment or textNode and it's being observed
           if (config.charData && oldstruct.charData !== undefined && $cur.nodeValue !== oldstruct.charData) {
@@ -440,10 +436,7 @@ export class MutationObserver {
     return dirty;
   }
 
-  _findCharDataMutations(mutations, $target, $oldstate, filter) {
-  }
-
-  _findAttributeMutations(mutations, $target, $oldstate, filter) {
+  private findAttributeMutations(mutations, $target, $oldstate, filter) {
     let checked = {};
     let attributes = $target.attributes;
     let attr;
