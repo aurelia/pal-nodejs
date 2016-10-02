@@ -3,7 +3,7 @@ import { disposeObservers } from '../src/polyfills/mutation-observer';
 
 describe("MutationObserver", () => {
   let pal, observer, dom, document;
-  const noop = () => {};
+  const noop = () => { };
 
   beforeEach(() => {
     pal = buildPal();
@@ -270,7 +270,7 @@ describe("MutationObserver", () => {
     var document = pal.global.window.document;
     var div = document.createElement('div');
 
-    dom.createMutationObserver((changes) => {}).observe(div, {
+    dom.createMutationObserver((changes) => { }).observe(div, {
       attributes: true,
       characterData: true,
       childList: true
@@ -279,7 +279,3 @@ describe("MutationObserver", () => {
     disposeObservers(); // without this test-runner will never end.      
   });
 });
-
-
-
-

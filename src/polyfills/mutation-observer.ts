@@ -255,7 +255,7 @@ export class MutationObserver {
         mutations.push(new MutationRecord({
           type: 'characterData',
           target: $target,
-          oldValue: $oldstate.charData          
+          oldValue: $oldstate.charData
         }));
       }
 
@@ -335,7 +335,7 @@ export class MutationObserver {
           mutations.push(new MutationRecord({
             type: 'characterData',
             target: $cur,
-            oldValue: oldstruct.charData 
+            oldValue: oldstruct.charData
           }));
         }
         // now look @ subtree

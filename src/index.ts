@@ -73,6 +73,6 @@ export function initialize(): void {
 /**
 * Terminate any long-life timers 
 */
-export function terminate(){
+export function terminate() {
   disposeObservers();
 }
