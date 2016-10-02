@@ -4,13 +4,6 @@
  * Repository: https://github.com/megawac/MutationObserver.js
  */
 
-let _dispose = false;
-
-export function disposeObservers() {
-  _dispose = true;
-}
-
-
 export class Util {
   static counter = 1;
   static expando = 'mo_id';
