@@ -4,44 +4,10 @@
  * Repository: https://github.com/megawac/MutationObserver.js
  */
 
-import { jsdom } from 'jsdom';
-
-let _dispose = false;
-
-export function polyfill(window) {
-  if (!window.MutationObserver) {
-    window.MutationObserver = MutationObserver;
-  }
-}
-
-export function disposeObservers() {
-  _dispose = true;
-}
-
-let dom = jsdom(undefined, {}).defaultView;
-let document = dom.document;
-let counter = 1;
-let expando = 'mo_id';
-
-let elmt = <any>document.createElement('i');
-elmt.style.top = "0";
-let hasAttributeBug = elmt.attributes.style.value !== 'null';
-document = null;
-dom = null;
-
-// GCC hack see http:// stackoverflow.com/a/23202438/1517919
-const JSCompiler_renameProperty = a => a;
-
-const getAttributeWithStyleHack = (el, attr) => {
-  // As with getAttributeSimple there is a potential warning for custom attribtues in IE7.
-  return attr.name !== 'style' ? attr.value : el.style.cssText;
-};
-
-const getAttributeSimple = (el, attr) => attr.value;
-
-const getAttributeValue = hasAttributeBug ? getAttributeSimple : getAttributeWithStyleHack;
-
 export class Util {
+  static counter = 1;
+  static expando = 'mo_id';
+
   static clone($target, config) {
     let recurse = true; // set true so childList we'll always check the first level
     return (function copy($target) {
@@ -67,7 +33,7 @@ export class Util {
           */
           elestruct.attr = Util.reduce($target.attributes, (memo, attr) => {
             if (!config.afilter || config.afilter[attr.name]) {
-              memo[attr.name] = getAttributeValue($target, attr);
+              memo[attr.name] = attr.value;
             }
             return memo;
           }, {});
@@ -94,6 +60,7 @@ export class Util {
   * @return {number}
   */
   static indexOfCustomNode(set, $node, idx) {
+    const JSCompiler_renameProperty = a => a;
     return this.indexOf(set, $node, idx, JSCompiler_renameProperty('node'));
   }
 
@@ -105,12 +72,12 @@ export class Util {
   */
   static getElementId($ele) {
     try {
-      return $ele.id || ($ele[expando] = $ele[expando] || counter++);
+      return $ele.id || ($ele[this.expando] = $ele[this.expando] || this.counter++);
     } catch (e) { // ie <8 will throw if you set an unknown property on a text node
       try {
         return $ele.nodeValue; // naive
       } catch (shitie) { // when text node is removed: https://gist.github.com/megawac/8355978 :(
-        return counter++;
+        return this.counter++;
       }
     }
   }
@@ -171,11 +138,13 @@ export class MutationObserver {
   private _period = 30;
   private _timeout = null;
   private _disposed = false;
+  private _notifyListener = null;
 
   constructor(listener) {
     this._watched = [];
     this._listener = listener;
     this._period = 30;
+    this._notifyListener = () => { this.scheduleMutationCheck(this); };
   }
 
   observe($target, config) {
@@ -190,6 +159,8 @@ export class MutationObserver {
 
       afilter: null
     };
+
+    MutationNotifier.getInstance().on("changed", this._notifyListener);
 
     let watched = this._watched;
 
@@ -211,13 +182,8 @@ export class MutationObserver {
 
     watched.push({
       tar: $target,
-      fn: this._createMutationSearcher($target, settings)
+      fn: this.createMutationSearcher($target, settings)
     });
-
-    // reconnect if not connected
-    if (!this._timeout) {
-      this._startMutationChecker(this);
-    }
   }
 
   takeRecords() {
@@ -233,12 +199,13 @@ export class MutationObserver {
 
   disconnect() {
     this._watched = []; // clear the stuff being observed
+    MutationNotifier.getInstance().removeListener("changed", this._notifyListener );
     this._disposed = true;
     clearTimeout(this._timeout); // ready for garbage collection
     this._timeout = null;
   }
 
-  _createMutationSearcher($target, config) {
+  private createMutationSearcher($target, config) {
     /** type {Elestuct} */
     let $oldstate = Util.clone($target, config); // create the cloned datastructure
 
@@ -261,12 +228,12 @@ export class MutationObserver {
 
       // Alright we check base level changes in attributes... easy
       if (config.attr && $oldstate.attr) {
-        this._findAttributeMutations(mutations, $target, $oldstate.attr, config.afilter);
+        this.findAttributeMutations(mutations, $target, $oldstate.attr, config.afilter);
       }
 
       // check childlist or subtree for mutations
       if (config.kids || config.descendents) {
-        dirty = this._searchSubtree(mutations, $target, $oldstate, config);
+        dirty = this.searchSubtree(mutations, $target, $oldstate, config);
       }
 
       // reclone data structure if theres changes
@@ -277,22 +244,26 @@ export class MutationObserver {
     };
   }
 
-  _startMutationChecker(observer) {
-    const check = () => {
-      let mutations = observer.takeRecords();
-
-      if (mutations.length) { // fire away
-        // calling the listener with context is not spec but currently consistent with FF and WebKit
-        observer._listener(mutations, observer);
-      }
-      /** @private */
-      if (observer._disposed == false && _dispose == false)
-        observer._timeout = setTimeout(check, this._period);
-    };
-    check();
+  private scheduleMutationCheck(observer) {
+    // Only schedule if there isn't already a timer. 
+    if (!observer._timeout) {
+      observer._timeout = setTimeout(() => this.mutationChecker(observer), this._period);
+    }
   }
 
-  _searchSubtree(mutations, $target, $oldstate, config) {
+  private mutationChecker(observer) {
+    // allow scheduling a new timer. 
+    observer._timeout = null; 
+    
+    let mutations = observer.takeRecords();
+
+    if (mutations.length) { // fire away
+      // calling the listener with context is not spec but currently consistent with FF and WebKit
+      observer._listener(mutations, observer);
+    }
+  }
+
+  private searchSubtree(mutations, $target, $oldstate, config) {
     // Track if the tree is dirty and has to be recomputed (#14).
     let dirty;
     /*
@@ -330,7 +301,7 @@ export class MutationObserver {
         }
 
         // Alright we found the resorted nodes now check for other types of mutations
-        if (config.attr && oldstruct.attr) this._findAttributeMutations(mutations, $cur, oldstruct.attr, config.afilter);
+        if (config.attr && oldstruct.attr) this.findAttributeMutations(mutations, $cur, oldstruct.attr, config.afilter);
         if (config.charData && $cur.nodeType === 3 && $cur.nodeValue !== oldstruct.charData) {
           mutations.push(new MutationRecord({
             type: 'characterData',
@@ -384,7 +355,7 @@ export class MutationObserver {
         if ($cur === $old) { // expected case - optimized for this case
           // check attributes as specified by config
           if (config.attr && oldstruct.attr) {/* oldstruct.attr instead of textnode check */
-            this._findAttributeMutations(mutations, $cur, oldstruct.attr, config.afilter);
+            this.findAttributeMutations(mutations, $cur, oldstruct.attr, config.afilter);
           }
           // check character data if node is a comment or textNode and it's being observed
           if (config.charData && oldstruct.charData !== undefined && $cur.nodeValue !== oldstruct.charData) {
@@ -471,10 +442,7 @@ export class MutationObserver {
     return dirty;
   }
 
-  _findCharDataMutations(mutations, $target, $oldstate, filter) {
-  }
-
-  _findAttributeMutations(mutations, $target, $oldstate, filter) {
+  private findAttributeMutations(mutations, $target, $oldstate, filter) {
     let checked = {};
     let attributes = $target.attributes;
     let attr;
@@ -484,7 +452,7 @@ export class MutationObserver {
       attr = attributes[i];
       name = attr.name;
       if (!filter || Util.has(filter, name)) {
-        if (getAttributeValue($target, attr) !== $oldstate[name]) {
+        if (attr.value !== $oldstate[name]) {
           // The pushing is redundant but gzips very nicely
           mutations.push(new MutationRecord({
             type: 'attributes',
@@ -527,5 +495,27 @@ export class MutationRecord {
       if (Util.has(settings, prop) && data[prop] !== undefined) settings[prop] = data[prop];
     }
     return settings;
+  }
+}
+
+import { EventEmitter } from 'events';
+
+export class MutationNotifier extends EventEmitter {
+  private static _instance: MutationNotifier = null;
+
+  static getInstance() {
+    if (!MutationNotifier._instance) {
+      MutationNotifier._instance = new MutationNotifier();
+    }
+    return MutationNotifier._instance;
+  }
+
+  constructor() {
+    super();
+    this.setMaxListeners(100);
+  }
+
+  notifyChanged(node: Node) {
+    this.emit("changed", node);
   }
 }

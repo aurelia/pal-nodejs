@@ -7,24 +7,79 @@ import { NodeJsPlatform } from './nodejs-platform';
 import { NodeJsFeature } from './nodejs-feature';
 import { NodeJsDom } from './nodejs-dom';
 import { jsdom } from 'jsdom';
+import { MutationObserver } from './polyfills/mutation-observer';
+import { MutationNotifier } from './polyfills/mutation-observer';
+
+let _patchedjsdom = false;
 
 export function buildPal(): { global: IGlobal, platform: IPlatform, dom: IDom, feature: IFeature } {
-  var _global: IGlobal = <IGlobal>jsdom(undefined, {}).defaultView;
+  var global: IGlobal = <IGlobal>jsdom(undefined, {}).defaultView;
 
-  ensurePerformance(_global.window);
-  ensureMutationObserver(_global.window);
+  if (!_patchedjsdom) {
+    patchNotifyChange(global);
+    _patchedjsdom = true;
+  }
 
-  var _platform = new NodeJsPlatform(_global);
-  var _dom = new NodeJsDom(_global);
-  var _feature = new NodeJsFeature(_global);
+  ensurePerformance(global.window);
+  ensureMutationObserver(global.window);
+
+  var platform = new NodeJsPlatform(global);
+  var dom = new NodeJsDom(global);
+  var feature = new NodeJsFeature(global);
 
   return {
-    global: _global,
-    platform: _platform,
-    dom: _dom,
-    feature: _feature
+    global: global,
+    platform: platform,
+    dom: dom,
+    feature: feature
   };
 }
+
+let intersectSetter = function (proto, propertyName: string, intersect: Function) {
+  let old = Object.getOwnPropertyDescriptor(proto, propertyName);
+  let oldSet = old.set;
+  let newSet = function set(V) {
+    oldSet.call(this, V);
+    intersect(this);
+  };
+  Object.defineProperty(proto, propertyName, {
+    set: newSet,
+    get: old.get,
+    configurable: old.configurable,
+    enumerable: old.enumerable
+  });
+};
+
+let intersectMethod = function (proto, methodName: string, intersect: Function) {
+  let orig = proto[methodName];
+  proto[methodName] = function (...args) {
+    var ret = orig.apply(this, args);
+    intersect(this);
+    return ret;
+  };
+};
+
+function patchNotifyChange(window: Window) {
+  let notifyInstance = MutationNotifier.getInstance();
+  let notify = function (node: Node) { notifyInstance.notifyChanged(node); };
+
+  let node_proto = (<any>window)._core.Node.prototype;
+
+  intersectMethod(node_proto, "appendChild", notify);
+  intersectMethod(node_proto, "insertBefore", notify);
+  intersectMethod(node_proto, "removeChild", notify);
+  intersectMethod(node_proto, "replaceChild", notify);
+  intersectSetter(node_proto, "nodeValue", notify);
+  intersectSetter(node_proto, "textContent", notify);
+
+  let element_proto = (<any>window)._core.Element.prototype;
+
+  intersectMethod(element_proto, "setAttribute", notify);
+  intersectMethod(element_proto, "removeAttribute", notify);
+  intersectMethod(element_proto, "removeAttributeNode", notify);
+  intersectMethod(element_proto, "removeAttributeNS", notify);
+}
+
 
 function ensurePerformance(window) {
   if (window.performance === undefined) {
@@ -45,5 +100,7 @@ function ensurePerformance(window) {
 }
 
 function ensureMutationObserver(window) {
-  require('./polyfills/mutation-observer').polyfill(window);
+  if (!window.MutationObserver) {
+    window.MutationObserver = MutationObserver;
+  }
 }

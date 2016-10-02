@@ -8,8 +8,8 @@ export class NodeJsDom implements IDom {
 
   constructor(public global: IGlobal) {
 
-    this.Element = (<any>global).Element;
-    this.SVGElement = (<any>global).SVGElement;
+    this.Element = global.Element;
+    this.SVGElement = global.SVGElement;
   }
 
   Element: typeof Element;

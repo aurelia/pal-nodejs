@@ -1,5 +1,4 @@
 import { buildPal } from '../src/nodejs-pal-builder';
-import { disposeObservers } from '../src/polyfills/mutation-observer';
 
 describe("MutationObserver", () => {
   let pal, observer, dom, document;
@@ -262,20 +261,5 @@ describe("MutationObserver", () => {
 
     expect(records.length).toBe(1);
     expect(records[0].oldValue).toBe('Foo');
-  });
-
-  it("can dispose observers via global disposeObservers method", function () {
-    var pal = buildPal();
-    var dom = pal.dom;
-    var document = pal.global.window.document;
-    var div = document.createElement('div');
-
-    dom.createMutationObserver((changes) => { }).observe(div, {
-      attributes: true,
-      characterData: true,
-      childList: true
-    });
-
-    disposeObservers(); // without this test-runner will never end.      
-  });
+  }); 
 });
