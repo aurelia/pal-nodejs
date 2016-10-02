@@ -245,10 +245,16 @@ export class MutationObserver {
   }
 
   private scheduleMutationCheck(observer) {
-    observer._timeout = setTimeout(() => this.mutationChecker(observer), this._period);
+    // Only schedule if there isn't already a timer. 
+    if (!observer._timeout) {
+      observer._timeout = setTimeout(() => this.mutationChecker(observer), this._period);
+    }
   }
 
   private mutationChecker(observer) {
+    // allow scheduling a new timer. 
+    observer._timeout = null; 
+    
     let mutations = observer.takeRecords();
 
     if (mutations.length) { // fire away
