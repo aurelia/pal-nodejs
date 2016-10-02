@@ -9,7 +9,7 @@ import { NodeJsDom } from './nodejs-dom';
 import { jsdom } from 'jsdom';
 
 export function buildPal(): { global: IGlobal, platform: IPlatform, dom: IDom, feature: IFeature } {
-  var _global: IGlobal = <any>jsdom(undefined, {}).defaultView;
+  var _global: IGlobal = <IGlobal>jsdom(undefined, {}).defaultView;
 
   ensurePerformance(_global.window);
   ensureMutationObserver(_global.window);
