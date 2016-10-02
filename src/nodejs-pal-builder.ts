@@ -7,6 +7,7 @@ import { NodeJsPlatform } from './nodejs-platform';
 import { NodeJsFeature } from './nodejs-feature';
 import { NodeJsDom } from './nodejs-dom';
 import { jsdom } from 'jsdom';
+import { MutationObserver } from './polyfills/mutation-observer';
 
 export function buildPal(): { global: IGlobal, platform: IPlatform, dom: IDom, feature: IFeature } {
   var _global: IGlobal = <IGlobal>jsdom(undefined, {}).defaultView;
@@ -45,5 +46,7 @@ function ensurePerformance(window) {
 }
 
 function ensureMutationObserver(window) {
-  require('./polyfills/mutation-observer').polyfill(window);
+  if (!window.MutationObserver) {
+    window.MutationObserver = MutationObserver;
+  }
 }
