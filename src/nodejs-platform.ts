@@ -33,7 +33,7 @@ export class NodeJsPlatform implements IPlatform {
   * @return A long integer value, the request id, that uniquely identifies the entry in the callback list.
   */
   requestAnimationFrame(callback: (animationFrameStart: number) => void): number {
-    return this.global.requestAnimationFrame(callback);
+    return setImmediate(callback);
   }
 
   /**
