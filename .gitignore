@@ -3,6 +3,5 @@ jspm_packages
 .idea
 .DS_STORE
 build/reports
-dist/
 spec/*.js
 spec/*.map

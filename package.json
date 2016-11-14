@@ -1,6 +1,6 @@
 {
   "name": "aurelia-pal-nodejs",
-  "version": "1.0.0-alpha.4",
+  "version": "1.0.0-alpha.5",
   "description": "The Node.js-specific implementation of Aurelia's platform abstraction layer.",
   "keywords": [
     "aurelia",
