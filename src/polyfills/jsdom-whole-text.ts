@@ -3,6 +3,7 @@ import * as NODE_TYPE from 'jsdom/lib/jsdom/living/node-type';
 import {domSymbolTree} from 'jsdom/lib/jsdom/living/helpers/internal-constants';
 
 export function polyfillWholeText() {
+  if (TextImpl.prototype.wholeText) return;
   Object.defineProperty(TextImpl.prototype, 'wholeText', {
     get: function() {
       let wholeText = this.textContent;
