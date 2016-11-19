@@ -41,6 +41,9 @@ export function initialize(): void {
     })(platform.global);
 
     if (platform.global.console && typeof console.log === 'object') {
+      if (typeof console['debug'] === 'undefined') {
+        console['debug'] = this.bind(console['log'], console);
+      }
       ['log', 'info', 'warn', 'error', 'assert', 'dir', 'clear', 'profile', 'profileEnd'].forEach(function (method) {
         console[method] = this.bind(console[method], console);
       }, Function.prototype.call);
