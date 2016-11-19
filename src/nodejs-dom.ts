@@ -9,7 +9,7 @@ export class NodeJsDom implements IDom {
   constructor(public global: IGlobal) {
 
     this.Element = global.Element;
-    this.SVGElement = global.SVGElement;
+    this.SVGElement = global.SVGElement || class SVGElement extends global.Element { };
   }
 
   Element: typeof Element;
