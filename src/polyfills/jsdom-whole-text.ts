@@ -1,3 +1,5 @@
+/// <reference path="./jsdom.d.ts" />
+
 import {implementation as TextImpl} from 'jsdom/lib/jsdom/living/nodes/Text-impl';
 import * as NODE_TYPE from 'jsdom/lib/jsdom/living/node-type';
 import {domSymbolTree} from 'jsdom/lib/jsdom/living/helpers/internal-constants';

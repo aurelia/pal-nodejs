@@ -13,7 +13,7 @@ export class NodeJsDom implements IDom {
   }
 
   Element: typeof Element;
-  SVGElement: typeof SVGElement;
+  SVGElement: typeof SVGElement /* until a proper implementation is ready: */ | any;
   boundary: string = 'aurelia-dom-boundary';
   title: string = "";
   activeElement: Element = null;
