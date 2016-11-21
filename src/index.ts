@@ -1,3 +1,4 @@
+/// <reference path="./nodejs-global.ts" />
 
 import { initializePAL, DOM, PLATFORM, FEATURE, isInitialized } from 'aurelia-pal';
 import { buildPal } from './nodejs-pal-builder';
@@ -67,4 +68,30 @@ export function initialize(): void {
       }
     });
   });
+}
+
+/**
+ * @description initializes and makes variables like 'window' into NodeJS globals
+ */
+export function globalize() {
+  initialize();
+  global.window = global.self = PLATFORM.global;
+  global.document = PLATFORM.global.document;
+  global.Element = PLATFORM.global.Element;
+  global.SVGElement = PLATFORM.global.SVGElement;
+  global.HTMLElement = PLATFORM.global.HTMLElement;
+  global.requestAnimationFrame = PLATFORM.global.requestAnimationFrame;
+  global.location = PLATFORM.global.location;
+  global.System = {
+    import(moduleId: string) {
+      try {
+        return Promise.resolve(require(moduleId));
+      } catch (e) {
+        return Promise.reject(e);
+      }
+    }
+  };
+  global.PAL = {
+    DOM, PLATFORM, FEATURE
+  };
 }
