@@ -1,7 +1,6 @@
-import { initializePAL } from 'aurelia-pal';
-import { buildPal } from './nodejs-pal-builder';
 
-let isInitialized = false;
+import { initializePAL, DOM, PLATFORM, FEATURE, isInitialized } from 'aurelia-pal';
+import { buildPal } from './nodejs-pal-builder';
 
 /**
 * Initializes the PAL with the NodeJS-targeted implementation.
@@ -10,8 +9,6 @@ export function initialize(): void {
   if (isInitialized) {
     return;
   }
-
-  isInitialized = true;
 
   let pal = buildPal();
 
