@@ -82,7 +82,6 @@ export function globalize() {
   global.HTMLElement = PLATFORM.global.HTMLElement;
   global.requestAnimationFrame = PLATFORM.global.requestAnimationFrame;
   global.location = PLATFORM.location;
-  global.XMLHttpRequest = PLATFORM.XMLHttpRequest;
   global.history = PLATFORM.history;
   global.System = {
     import(moduleId: string) {

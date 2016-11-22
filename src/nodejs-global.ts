@@ -8,7 +8,6 @@ declare namespace NodeJS {
     HTMLElement: typeof HTMLElement;
     requestAnimationFrame: typeof requestAnimationFrame;
     location: typeof location;
-    XMLHttpRequest: typeof XMLHttpRequest;
     history: typeof history;
     System: {
       import(moduleId: string): Promise<any>;
