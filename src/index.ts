@@ -77,11 +77,13 @@ export function globalize() {
   initialize();
   global.window = global.self = PLATFORM.global;
   global.document = PLATFORM.global.document;
-  global.Element = PLATFORM.global.Element;
-  global.SVGElement = PLATFORM.global.SVGElement;
+  global.Element = DOM.Element;
+  global.SVGElement = DOM.SVGElement;
   global.HTMLElement = PLATFORM.global.HTMLElement;
   global.requestAnimationFrame = PLATFORM.global.requestAnimationFrame;
-  global.location = PLATFORM.global.location;
+  global.location = PLATFORM.location;
+  global.XMLHttpRequest = PLATFORM.XMLHttpRequest;
+  global.history = PLATFORM.history;
   global.System = {
     import(moduleId: string) {
       try {
