@@ -21,10 +21,9 @@ export function polyfillWholeText() {
     }
     return wholeText;
   };
-  const implementationsToPolyfill = [TextImpl.prototype, Text.prototype];
+  const implementationsToPolyfill = [TextImpl.prototype, Text.prototype] as Array<Object>;
   implementationsToPolyfill.forEach(implementation => {
-    const definedProperties = Object.getOwnPropertyNames(implementation);
-    if (definedProperties.indexOf('wholeText') >= 0) return;
+    if (implementation.hasOwnProperty('wholeText')) return;
     Object.defineProperty(implementation, 'wholeText', {
       get: wholeText,
       enumerable: true,
