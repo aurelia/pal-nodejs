@@ -96,4 +96,5 @@ export function globalize() {
   global.PAL = {
     DOM, PLATFORM, FEATURE
   };
+  return global;
 }
