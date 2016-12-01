@@ -7,7 +7,6 @@ import { IGlobal } from './global';
 export class NodeJsDom implements IDom {
 
   constructor(public global: IGlobal) {
-
     this.Element = global.Element;
     this.SVGElement = global.SVGElement || class SVGElement extends global.Element { };
   }

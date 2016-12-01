@@ -59,6 +59,6 @@ gulp.task('build:spec', function () {
         return relativeSource;
       }
     }))
-    .pipe(replace(/(require\("..\/src\/)/g, 'require("..\/dist\/'))
+    .pipe(replace(/(require\("\..\/src\/)/g, 'require("..\/dist\/'))
     .pipe(gulp.dest(paths.spec));
 });
