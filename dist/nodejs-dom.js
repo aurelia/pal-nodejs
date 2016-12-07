@@ -9,7 +9,8 @@ class NodeJsDom {
         this.title = "";
         this.activeElement = null;
         this.Element = global.Element;
-        this.SVGElement = global.SVGElement;
+        this.SVGElement = global.SVGElement || class SVGElement extends global.Element {
+        };
     }
     addEventListener(eventName, callback, capture) {
         return this.global.document.addEventListener(eventName, callback, capture);

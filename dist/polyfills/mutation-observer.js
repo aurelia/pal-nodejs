@@ -123,9 +123,9 @@ class Util {
         return obj[prop] !== undefined; // will be nicely inlined by gcc
     }
 }
+exports.Util = Util;
 Util.counter = 1;
 Util.expando = 'mo_id';
-exports.Util = Util;
 class MutationObserver {
     constructor(listener) {
         this._watched = [];
@@ -464,7 +464,7 @@ class MutationRecord {
     }
 }
 exports.MutationRecord = MutationRecord;
-const events_1 = require('events');
+const events_1 = require("events");
 class MutationNotifier extends events_1.EventEmitter {
     constructor() {
         super();
@@ -480,7 +480,7 @@ class MutationNotifier extends events_1.EventEmitter {
         this.emit("changed", node);
     }
 }
-MutationNotifier._instance = null;
 exports.MutationNotifier = MutationNotifier;
+MutationNotifier._instance = null;
 
 //# sourceMappingURL=mutation-observer.js.map

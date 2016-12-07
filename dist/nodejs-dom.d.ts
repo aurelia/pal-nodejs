@@ -7,7 +7,7 @@ export declare class NodeJsDom implements IDom {
     global: IGlobal;
     constructor(global: IGlobal);
     Element: typeof Element;
-    SVGElement: typeof SVGElement;
+    SVGElement: typeof SVGElement | any;
     boundary: string;
     title: string;
     activeElement: Element;

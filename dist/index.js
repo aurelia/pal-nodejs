@@ -1,15 +1,14 @@
+/// <reference path="./nodejs-global.ts" />
 "use strict";
-const aurelia_pal_1 = require('aurelia-pal');
-const nodejs_pal_builder_1 = require('./nodejs-pal-builder');
-let isInitialized = false;
+const aurelia_pal_1 = require("aurelia-pal");
+const nodejs_pal_builder_1 = require("./nodejs-pal-builder");
 /**
 * Initializes the PAL with the NodeJS-targeted implementation.
 */
 function initialize() {
-    if (isInitialized) {
+    if (aurelia_pal_1.isInitialized) {
         return;
     }
-    isInitialized = true;
     let pal = nodejs_pal_builder_1.buildPal();
     aurelia_pal_1.initializePAL((platform, feature, dom) => {
         Object.assign(platform, pal.platform);
@@ -37,6 +36,9 @@ function initialize() {
                     con[method] = dummy;
         })(platform.global);
         if (platform.global.console && typeof console.log === 'object') {
+            if (typeof console['debug'] === 'undefined') {
+                console['debug'] = this.bind(console['log'], console);
+            }
             ['log', 'info', 'warn', 'error', 'assert', 'dir', 'clear', 'profile', 'profileEnd'].forEach(function (method) {
                 console[method] = this.bind(console[method], console);
             }, Function.prototype.call);
@@ -62,5 +64,34 @@ function initialize() {
     });
 }
 exports.initialize = initialize;
+/**
+ * @description initializes and makes variables like 'window' into NodeJS globals
+ */
+function globalize() {
+    initialize();
+    global.window = global.self = aurelia_pal_1.PLATFORM.global;
+    global.document = aurelia_pal_1.PLATFORM.global.document;
+    global.Element = aurelia_pal_1.DOM.Element;
+    global.SVGElement = aurelia_pal_1.DOM.SVGElement;
+    global.HTMLElement = aurelia_pal_1.PLATFORM.global.HTMLElement;
+    global.requestAnimationFrame = aurelia_pal_1.PLATFORM.global.requestAnimationFrame;
+    global.location = aurelia_pal_1.PLATFORM.location;
+    global.history = aurelia_pal_1.PLATFORM.history;
+    global.System = {
+        import(moduleId) {
+            try {
+                return Promise.resolve(require(moduleId));
+            }
+            catch (e) {
+                return Promise.reject(e);
+            }
+        }
+    };
+    global.PAL = {
+        DOM: aurelia_pal_1.DOM, PLATFORM: aurelia_pal_1.PLATFORM, FEATURE: aurelia_pal_1.FEATURE
+    };
+    return global;
+}
+exports.globalize = globalize;
 
 //# sourceMappingURL=index.js.map

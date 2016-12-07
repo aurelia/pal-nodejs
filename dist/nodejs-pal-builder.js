@@ -1,15 +1,17 @@
 "use strict";
-const nodejs_platform_1 = require('./nodejs-platform');
-const nodejs_feature_1 = require('./nodejs-feature');
-const nodejs_dom_1 = require('./nodejs-dom');
-const jsdom_1 = require('jsdom');
-const mutation_observer_1 = require('./polyfills/mutation-observer');
-const mutation_observer_2 = require('./polyfills/mutation-observer');
+const nodejs_platform_1 = require("./nodejs-platform");
+const nodejs_feature_1 = require("./nodejs-feature");
+const nodejs_dom_1 = require("./nodejs-dom");
+const jsdom_1 = require("jsdom");
+const jsdom_whole_text_1 = require("./polyfills/jsdom-whole-text");
+const mutation_observer_1 = require("./polyfills/mutation-observer");
+const mutation_observer_2 = require("./polyfills/mutation-observer");
 let _patchedjsdom = false;
 function buildPal() {
     var global = jsdom_1.jsdom(undefined, {}).defaultView;
     if (!_patchedjsdom) {
         patchNotifyChange(global);
+        jsdom_whole_text_1.polyfillWholeText();
         _patchedjsdom = true;
     }
     ensurePerformance(global.window);
