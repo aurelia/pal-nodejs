@@ -28,7 +28,7 @@
     "url": "http://github.com/aurelia/pal-nodejs"
   },
   "dependencies": {
-    "aurelia-pal": "^1.0.0",    
+    "aurelia-pal": "^1.1.0",
     "jsdom": "^9.8.3"
   },
   "devDependencies": {
