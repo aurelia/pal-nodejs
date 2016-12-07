@@ -16,6 +16,6 @@ declare namespace NodeJS {
       DOM: any;
       PLATFORM: any;
       FEATURE: any;
-    }
+    };
   }
 }

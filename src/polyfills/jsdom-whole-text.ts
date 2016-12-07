@@ -29,5 +29,5 @@ export function polyfillWholeText() {
       enumerable: true,
       configurable: true
     });
-  })
+  });
 }
