@@ -7,7 +7,6 @@ import { NodeJsPlatform } from './nodejs-platform';
 import { NodeJsFeature } from './nodejs-feature';
 import { NodeJsDom } from './nodejs-dom';
 import { jsdom } from 'jsdom';
-import { polyfillWholeText } from './polyfills/jsdom-whole-text';
 import { MutationObserver } from './polyfills/mutation-observer';
 import { MutationNotifier } from './polyfills/mutation-observer';
 
@@ -18,7 +17,6 @@ export function buildPal(): { global: IGlobal, platform: IPlatform, dom: IDom, f
 
   if (!_patchedjsdom) {
     patchNotifyChange(global);
-    polyfillWholeText();
     _patchedjsdom = true;
   }
 
