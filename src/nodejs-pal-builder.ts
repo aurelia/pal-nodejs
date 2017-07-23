@@ -24,7 +24,7 @@ export function buildPal(): { global: IGlobal, platform: IPlatform, dom: IDom, f
   ensurePerformance(global.window);
   ensureMutationObserver(global.window);
 
-  var platform = new NodeJsPlatform(global);
+  var platform = new NodeJsPlatform(global, jsdom);
   var dom = new NodeJsDom(global);
   var feature = new NodeJsFeature(global);
 
