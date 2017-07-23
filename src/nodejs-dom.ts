@@ -26,6 +26,9 @@ export class NodeJsDom implements IDom {
   createElement(tagName: string): Element {
     return this.global.document.createElement(tagName);
   }
+  createAttribute(name: string): Attr {
+    return this.global.document.createAttribute(name);
+  }
   createTextNode(text: string): Text {
     return this.global.document.createTextNode(text);
   }
