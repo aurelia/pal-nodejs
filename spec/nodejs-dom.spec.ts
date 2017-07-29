@@ -57,6 +57,10 @@ describe('NodeJs Dom', () => {
     expect(DOM.activeElement).toBeDefined();
   });
 
+  it('createAttribute is defined', () => {
+    expect(DOM.createAttribute).toBeDefined();
+  });
+
   it('createMutationObserver is defined', () => {
     expect(DOM.createMutationObserver).toBeDefined();
   });
