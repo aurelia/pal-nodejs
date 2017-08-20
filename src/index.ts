@@ -2,6 +2,7 @@
 
 import { initializePAL, DOM, PLATFORM, FEATURE, isInitialized } from 'aurelia-pal';
 import { buildPal } from './nodejs-pal-builder';
+import { MutationNotifier } from './polyfills/mutation-observer';
 
 /**
 * Initializes the PAL with the NodeJS-targeted implementation.
@@ -96,4 +97,12 @@ export function globalize() {
     DOM, PLATFORM, FEATURE
   };
   return global;
+}
+
+export function reset(window?: Window) {
+  if (window) {
+    window.close();
+  }
+
+  MutationNotifier.getInstance().destruct();
 }

@@ -1,6 +1,6 @@
 import { initialize } from '../src/index';
 import { DOM } from 'aurelia-pal';
-import { jsdom } from 'jsdom';
+import { JSDOM } from 'jsdom';
 
 initialize();
 
@@ -43,7 +43,7 @@ describe('NodeJs Dom', () => {
   });
 
   it('adoptNode returns adopted', () => {
-    let external = jsdom(undefined).defaultView.window.document.createElement("DIV");
+    let external = new JSDOM(undefined, {}).window.document.createElement("DIV");
     let adopted = DOM.adoptNode(external);
 
     expect(adopted.nodeName).toBe("DIV");
@@ -55,6 +55,10 @@ describe('NodeJs Dom', () => {
 
   it('activeElement is defined', () => {
     expect(DOM.activeElement).toBeDefined();
+  });
+
+  it('createAttribute is defined', () => {
+    expect(DOM.createAttribute).toBeDefined();
   });
 
   it('createMutationObserver is defined', () => {

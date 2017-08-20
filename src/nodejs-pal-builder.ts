@@ -6,26 +6,25 @@ import { IFeature } from './feature';
 import { NodeJsPlatform } from './nodejs-platform';
 import { NodeJsFeature } from './nodejs-feature';
 import { NodeJsDom } from './nodejs-dom';
-import { jsdom } from 'jsdom';
-import { polyfillWholeText } from './polyfills/jsdom-whole-text';
+import { JSDOM } from 'jsdom';
 import { MutationObserver } from './polyfills/mutation-observer';
 import { MutationNotifier } from './polyfills/mutation-observer';
 
 let _patchedjsdom = false;
 
 export function buildPal(): { global: IGlobal, platform: IPlatform, dom: IDom, feature: IFeature } {
-  var global: IGlobal = <IGlobal>jsdom(undefined, {}).defaultView;
+  var jsdom = new JSDOM(undefined, {});
+  var global: IGlobal = <IGlobal>jsdom.window;
 
   if (!_patchedjsdom) {
     patchNotifyChange(global);
-    polyfillWholeText();
     _patchedjsdom = true;
   }
 
   ensurePerformance(global.window);
   ensureMutationObserver(global.window);
 
-  var platform = new NodeJsPlatform(global);
+  var platform = new NodeJsPlatform(global, jsdom);
   var dom = new NodeJsDom(global);
   var feature = new NodeJsFeature(global);
 

@@ -515,6 +515,10 @@ export class MutationNotifier extends EventEmitter {
     this.setMaxListeners(100);
   }
 
+  destruct() {
+    this.removeAllListeners("changed");
+  }
+
   notifyChanged(node: Node) {
     this.emit("changed", node);
   }
