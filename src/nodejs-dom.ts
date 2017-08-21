@@ -38,6 +38,9 @@ export class NodeJsDom implements IDom {
   createDocumentFragment(): DocumentFragment {
     return this.global.document.createDocumentFragment();
   }
+  createTemplateElement(): HTMLTemplateElement {
+    return this.global.document.createElement('template');
+  }
   createMutationObserver(callback: (changes: MutationRecord[], instance: MutationObserver) => void): MutationObserver {
     return new ((<any>this.global.window).MutationObserver)(callback);
   }
