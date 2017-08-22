@@ -77,5 +77,6 @@ export declare class MutationNotifier extends EventEmitter {
     private static _instance;
     static getInstance(): MutationNotifier;
     constructor();
+    destruct(): void;
     notifyChanged(node: Node): void;
 }

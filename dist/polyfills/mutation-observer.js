@@ -1,9 +1,10 @@
+"use strict";
 /*
  * Based on Shim for MutationObserver interface
  * Author: Graeme Yeates (github.com/megawac)
  * Repository: https://github.com/megawac/MutationObserver.js
  */
-"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 class Util {
     static clone($target, config) {
         let recurse = true; // set true so childList we'll always check the first level
@@ -123,9 +124,9 @@ class Util {
         return obj[prop] !== undefined; // will be nicely inlined by gcc
     }
 }
-exports.Util = Util;
 Util.counter = 1;
 Util.expando = 'mo_id';
+exports.Util = Util;
 class MutationObserver {
     constructor(listener) {
         this._watched = [];
@@ -476,11 +477,14 @@ class MutationNotifier extends events_1.EventEmitter {
         }
         return MutationNotifier._instance;
     }
+    destruct() {
+        this.removeAllListeners("changed");
+    }
     notifyChanged(node) {
         this.emit("changed", node);
     }
 }
-exports.MutationNotifier = MutationNotifier;
 MutationNotifier._instance = null;
+exports.MutationNotifier = MutationNotifier;
 
 //# sourceMappingURL=mutation-observer.js.map

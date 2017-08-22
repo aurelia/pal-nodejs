@@ -1,7 +1,9 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 class NodeJsPlatform {
-    constructor(global) {
+    constructor(global, jsdom) {
         this.global = global;
+        this.jsdom = jsdom;
         /**
         * A function wich does nothing.
         */

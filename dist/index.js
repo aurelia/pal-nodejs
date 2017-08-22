@@ -1,7 +1,9 @@
-/// <reference path="./nodejs-global.ts" />
 "use strict";
+/// <reference path="./nodejs-global.ts" />
+Object.defineProperty(exports, "__esModule", { value: true });
 const aurelia_pal_1 = require("aurelia-pal");
 const nodejs_pal_builder_1 = require("./nodejs-pal-builder");
+const mutation_observer_1 = require("./polyfills/mutation-observer");
 /**
 * Initializes the PAL with the NodeJS-targeted implementation.
 */
@@ -93,5 +95,12 @@ function globalize() {
     return global;
 }
 exports.globalize = globalize;
+function reset(window) {
+    if (window) {
+        window.close();
+    }
+    mutation_observer_1.MutationNotifier.getInstance().destruct();
+}
+exports.reset = reset;
 
 //# sourceMappingURL=index.js.map

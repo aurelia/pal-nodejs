@@ -14,9 +14,11 @@ export declare class NodeJsDom implements IDom {
     addEventListener(eventName: string, callback: EventListener, capture: boolean): void;
     removeEventListener(eventName: string, callback: EventListener, capture: boolean): void;
     createElement(tagName: string): Element;
+    createAttribute(name: string): Attr;
     createTextNode(text: string): Text;
     createComment(text: string): Comment;
     createDocumentFragment(): DocumentFragment;
+    createTemplateElement(): HTMLTemplateElement;
     createMutationObserver(callback: (changes: MutationRecord[], instance: MutationObserver) => void): MutationObserver;
     createCustomEvent(eventType: string, options: Object): CustomEvent;
     dispatchEvent(evt: Event): void;

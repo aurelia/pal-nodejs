@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 /**
 * Represents the core APIs of the DOM.
 */
@@ -21,6 +22,9 @@ class NodeJsDom {
     createElement(tagName) {
         return this.global.document.createElement(tagName);
     }
+    createAttribute(name) {
+        return this.global.document.createAttribute(name);
+    }
     createTextNode(text) {
         return this.global.document.createTextNode(text);
     }
@@ -29,6 +33,9 @@ class NodeJsDom {
     }
     createDocumentFragment() {
         return this.global.document.createDocumentFragment();
+    }
+    createTemplateElement() {
+        return this.global.document.createElement('template');
     }
     createMutationObserver(callback) {
         return new (this.global.window.MutationObserver)(callback);

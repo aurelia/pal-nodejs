@@ -1,3 +1,21 @@
+<a name="1.0.0-beta.2.0.0"></a>
+# [1.0.0-beta.2.0.0](https://github.com/aurelia/pal-nodejs/compare/1.0.0-beta.1.0.0...1.0.0-beta.2.0.0) (2017-08-22)
+
+
+### Bug Fixes
+
+* **whole-text:** remove unnecessary wholeText polyfill ([348a272](https://github.com/aurelia/pal-nodejs/commit/348a272))
+
+
+### Features
+
+* **dom:** add createTemplateElement ([8158b02](https://github.com/aurelia/pal-nodejs/commit/8158b02))
+* **dom:** implement createAttribute ([e926bd9](https://github.com/aurelia/pal-nodejs/commit/e926bd9))
+* **index:** add reset function ([a33a116](https://github.com/aurelia/pal-nodejs/commit/a33a116))
+* **jsdom:** update jsdom ([d8e6239](https://github.com/aurelia/pal-nodejs/commit/d8e6239))
+
+
+
 <a name="1.0.0-beta.1.0.0"></a>
 # [1.0.0-beta.1.0.0](https://github.com/aurelia/pal-nodejs/compare/1.0.0-alpha.5...v1.0.0-beta.1.0.0) (2016-12-07)
 

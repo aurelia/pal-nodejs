@@ -1,9 +1,11 @@
 import { IPlatform } from './platform';
 import { IPerformance } from './performance';
 import { IGlobal } from './global';
+import { JSDOM } from 'jsdom';
 export declare class NodeJsPlatform implements IPlatform {
     global: IGlobal;
-    constructor(global: IGlobal);
+    jsdom: JSDOM;
+    constructor(global: IGlobal, jsdom: JSDOM);
     /**
     * A function wich does nothing.
     */
