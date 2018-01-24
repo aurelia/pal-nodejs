@@ -27,9 +27,12 @@
     "type": "git",
     "url": "http://github.com/aurelia/pal-nodejs"
   },
+  "peerDependencies": {
+    "jsdom": "~11.5.1"
+  },
   "dependencies": {
     "aurelia-pal": "^1.1.0",
-    "jsdom": "^11.1.0"
+    "jsdom": "~11.5.1"
   },
   "devDependencies": {
     "@types/jasmine": "^2.2.34",
