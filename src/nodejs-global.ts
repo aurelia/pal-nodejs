@@ -4,6 +4,7 @@ declare namespace NodeJS {
     self: typeof window;
     document: typeof Window.prototype.document;
     Element: typeof Element;
+    NodeList: typeof NodeList;
     SVGElement: typeof SVGElement;
     HTMLElement: typeof HTMLElement;
     requestAnimationFrame: typeof requestAnimationFrame;

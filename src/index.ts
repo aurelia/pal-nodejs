@@ -79,6 +79,7 @@ export function globalize() {
   global.window = global.self = PLATFORM.global;
   global.document = PLATFORM.global.document;
   global.Element = DOM.Element;
+  global.NodeList = PLATFORM.global.NodeList;
   global.SVGElement = DOM.SVGElement;
   global.HTMLElement = PLATFORM.global.HTMLElement;
   global.requestAnimationFrame = PLATFORM.global.requestAnimationFrame;
