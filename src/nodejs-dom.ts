@@ -8,10 +8,12 @@ export class NodeJsDom implements IDom {
 
   constructor(public global: IGlobal) {
     this.Element = global.Element;
+    this.NodeList = global.NodeList;
     this.SVGElement = global.SVGElement || class SVGElement extends global.Element { };
   }
 
   Element: typeof Element;
+  NodeList: typeof NodeList;
   SVGElement: typeof SVGElement /* until a proper implementation is ready: */ | any;
   boundary: string = 'aurelia-dom-boundary';
   title: string = "";

@@ -1,5 +1,5 @@
 import { initialize } from '../src/index';
-import { DOM } from 'aurelia-pal';
+import { DOM, PLATFORM } from 'aurelia-pal';
 import { JSDOM } from 'jsdom';
 
 initialize();
@@ -100,4 +100,9 @@ describe('NodeJs Dom', () => {
   it('dispatchEvent is defined', () => {
     expect(DOM.dispatchEvent).toBeDefined();
   });
+
+  it('NodeList is defined',()=>{
+    expect(PLATFORM.global.NodeList).toBeDefined();
+  });
+  
 });
