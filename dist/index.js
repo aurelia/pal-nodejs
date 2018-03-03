@@ -74,6 +74,7 @@ function globalize() {
     global.window = global.self = aurelia_pal_1.PLATFORM.global;
     global.document = aurelia_pal_1.PLATFORM.global.document;
     global.Element = aurelia_pal_1.DOM.Element;
+    global.NodeList = aurelia_pal_1.PLATFORM.global.NodeList;
     global.SVGElement = aurelia_pal_1.DOM.SVGElement;
     global.HTMLElement = aurelia_pal_1.PLATFORM.global.HTMLElement;
     global.requestAnimationFrame = aurelia_pal_1.PLATFORM.global.requestAnimationFrame;

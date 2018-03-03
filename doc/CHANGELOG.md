@@ -1,3 +1,16 @@
+<a name="1.0.0-beta.3.1.0"></a>
+# [1.0.0-beta.3.1.0](https://github.com/aurelia/pal-nodejs/compare/1.0.0-beta.3.0.0...1.0.0-beta.3.1.0) (2018-03-03)
+
+### Features
+
+* **dom:** add NodeList to global ([20ce260](https://github.com/aurelia/pal-nodejs/commit/20ce260))
+
+### Bug Fixes
+
+* **global:** add missing interface element to fix compile errors ([fa2bbd3](https://github.com/aurelia/pal-nodejs/commit/fa2bbd3))
+
+
+
 <a name="1.0.0-beta.2.0.0"></a>
 # [1.0.0-beta.2.0.0](https://github.com/aurelia/pal-nodejs/compare/1.0.0-beta.1.0.0...1.0.0-beta.2.0.0) (2017-08-22)
 
@@ -40,6 +53,3 @@
 * **index:** move isInitialized to aurelia-pal ([b7ce21a](https://github.com/aurelia/pal-nodejs/commit/b7ce21a))
 * **nodejs-global:** add exported globalize function ([55c2ffd](https://github.com/aurelia/pal-nodejs/commit/55c2ffd))
 * **whole-text:** add [@jdanyow](https://github.com/jdanyow)'s wholeText jsdom polyfill ([a414eb7](https://github.com/aurelia/pal-nodejs/commit/a414eb7))
-
-
-

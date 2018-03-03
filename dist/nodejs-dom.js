@@ -10,6 +10,7 @@ class NodeJsDom {
         this.title = "";
         this.activeElement = null;
         this.Element = global.Element;
+        this.NodeList = global.NodeList;
         this.SVGElement = global.SVGElement || class SVGElement extends global.Element {
         };
     }
