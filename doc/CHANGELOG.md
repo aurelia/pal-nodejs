@@ -1,3 +1,13 @@
+<a name="1.0.0-beta.3.2.0"></a>
+# [1.0.0-beta.3.2.0](https://github.com/aurelia/pal-nodejs/compare/1.0.0-beta.3.1.0...1.0.0-beta.3.2.0) (2018-03-06)
+
+
+### Features
+
+* **performance:** update performance API ([1508a8b](https://github.com/aurelia/pal-nodejs/commit/1508a8b))
+
+
+
 <a name="1.0.0-beta.3.1.0"></a>
 # [1.0.0-beta.3.1.0](https://github.com/aurelia/pal-nodejs/compare/1.0.0-beta.3.0.0...1.0.0-beta.3.1.0) (2018-03-03)
 
