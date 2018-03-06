@@ -16,6 +16,12 @@ describe("pal-builder", () => {
 
   it('should ensure performance', () => {
     expect(pal.global.performance.now()).toBeGreaterThan(-1);
+    expect(pal.global.performance.measure).toBeDefined();
+    expect(pal.global.performance.mark).toBeDefined();
+    expect(pal.global.performance.getEntriesByType).toBeDefined();
+    expect(pal.global.performance.getEntriesByName).toBeDefined();
+    expect(pal.global.performance.clearMeasures).toBeDefined();
+    expect(pal.global.performance.clearMarks).toBeDefined();
   });
 
   it('should enusre mutation observer is loaded', () => {
