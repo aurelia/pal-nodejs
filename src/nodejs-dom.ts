@@ -1,6 +1,13 @@
 import { IDom } from './dom';
 import { IGlobal } from './global';
 
+declare module './global' {
+  interface IGlobal {
+    window: any;
+    document: any;
+  }
+}
+
 /**
 * Represents the core APIs of the DOM.
 */
@@ -19,12 +26,13 @@ export class NodeJsDom implements IDom {
   title: string = "";
   activeElement: Element = null;
 
-  addEventListener(eventName: string, callback: EventListener, capture: boolean): void {
+  addEventListener(eventName: string, callback: EventListenerOrEventListenerObject, capture: boolean): void {
     return this.global.document.addEventListener(eventName, callback, capture);
   }
-  removeEventListener(eventName: string, callback: EventListener, capture: boolean): void {
+  removeEventListener(eventName: string, callback: EventListenerOrEventListenerObject, capture: boolean): void {
     return this.global.document.removeEventListener(eventName, callback, capture);
   }
+  createElement<T extends keyof HTMLElementTagNameMap>(tagName: T): HTMLElementTagNameMap[T];
   createElement(tagName: string): Element {
     return this.global.document.createElement(tagName);
   }
@@ -46,7 +54,7 @@ export class NodeJsDom implements IDom {
   createMutationObserver(callback: (changes: MutationRecord[], instance: MutationObserver) => void): MutationObserver {
     return new ((<any>this.global.window).MutationObserver)(callback);
   }
-  createCustomEvent(eventType: string, options: Object): CustomEvent {
+  createCustomEvent(eventType: string, options?: Object): CustomEvent {
     return new this.global.CustomEvent(eventType, options);
   }
   dispatchEvent(evt: Event): void {
@@ -58,13 +66,16 @@ export class NodeJsDom implements IDom {
   getElementById(id: string): Element {
     return this.global.document.getElementById(id);
   }
-  querySelectorAll(query: string): NodeList {
+  querySelector<E extends Element = Element>(query: string): E | null {
+    return this.global.document.querySelector(query);
+  }
+  querySelectorAll<E extends Element = Element>(query: string): NodeListOf<E> {
     return this.global.document.querySelectorAll(query);
   }
   nextElementSibling(element: Element): Element {
     return element.nextElementSibling;
   }
-  createTemplateFromMarkup(markup: string): Element {
+  createTemplateFromMarkup(markup: string): HTMLTemplateElement {
     let parser = this.global.document.createElement('div');
     parser.innerHTML = markup;
 
