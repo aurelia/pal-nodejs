@@ -1,3 +1,10 @@
+<a name="1.0.0-beta.3.3.0"></a>
+# [1.0.0-beta.3.3.0](https://github.com/aurelia/pal-nodejs/compare/1.0.0-beta.3.2.0...1.0.0-beta.3.3.0) (2018-04-17)
+
+### Features
+
+* Updated to support new PAL methods and typings.
+
 <a name="1.0.0-beta.3.2.0"></a>
 # [1.0.0-beta.3.2.0](https://github.com/aurelia/pal-nodejs/compare/1.0.0-beta.3.1.0...1.0.0-beta.3.2.0) (2018-03-06)
 

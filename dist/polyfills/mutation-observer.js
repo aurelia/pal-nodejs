@@ -68,11 +68,11 @@ class Util {
         try {
             return $ele.id || ($ele[this.expando] = $ele[this.expando] || this.counter++);
         }
-        catch (e) {
+        catch (e) { // ie <8 will throw if you set an unknown property on a text node
             try {
                 return $ele.nodeValue; // naive
             }
-            catch (shitie) {
+            catch (shitie) { // when text node is removed: https://gist.github.com/megawac/8355978 :(
                 return this.counter++;
             }
         }
@@ -109,7 +109,7 @@ class Util {
     * @param {string} [prop] Property on set item to compare to item
     */
     static indexOf(set, item, idx, prop) {
-        for (; idx < set.length; idx++) {
+        for ( /*idx = ~~idx*/; idx < set.length; idx++) { // start idx is always given as this is internal
             if ((prop ? set[idx][prop] : set[idx]) === item)
                 return idx;
         }
@@ -230,7 +230,7 @@ class MutationObserver {
         // allow scheduling a new timer. 
         observer._timeout = null;
         let mutations = observer.takeRecords();
-        if (mutations.length) {
+        if (mutations.length) { // fire away
             // calling the listener with context is not spec but currently consistent with FF and WebKit
             observer._listener(mutations, observer);
         }
@@ -319,9 +319,9 @@ class MutationObserver {
                 $cur = $kids[i];
                 oldstruct = $oldkids[j];
                 $old = oldstruct && oldstruct.node;
-                if ($cur === $old) {
+                if ($cur === $old) { // expected case - optimized for this case
                     // check attributes as specified by config
-                    if (config.attr && oldstruct.attr) {
+                    if (config.attr && oldstruct.attr) { /* oldstruct.attr instead of textnode check */
                         this.findAttributeMutations(mutations, $cur, oldstruct.attr, config.afilter);
                     }
                     // check character data if node is a comment or textNode and it's being observed
@@ -340,15 +340,15 @@ class MutationObserver {
                     i++;
                     j++;
                 }
-                else {
+                else { // (uncommon case) lookahead until they are the same again or the end of children
                     dirty = true;
-                    if (!map) {
+                    if (!map) { // delayed initalization (big perf benefit)
                         map = {};
                         conflicts = [];
                     }
                     if ($cur) {
                         // check id is in the location map otherwise do a indexOf search
-                        if (!(map[id = Util.getElementId($cur)])) {
+                        if (!(map[id = Util.getElementId($cur)])) { // to prevent double checking
                             // mark id as found
                             map[id] = true;
                             // custom indexOf using comparitor checking oldkids[i].node === $cur

@@ -2,6 +2,15 @@ import { IPlatform } from './platform';
 import { IPerformance } from './performance';
 import { IGlobal } from './global';
 import { JSDOM } from 'jsdom';
+declare module './global' {
+    interface IGlobal {
+        performance: any;
+        location: any;
+        history: any;
+        addEventListener(eventName: string, callback: EventListenerOrEventListenerObject, capture?: boolean): void;
+        removeEventListener(eventName: string, callback: EventListenerOrEventListenerObject, capture?: boolean): void;
+    }
+}
 export declare class NodeJsPlatform implements IPlatform {
     global: IGlobal;
     jsdom: JSDOM;
@@ -39,14 +48,14 @@ export declare class NodeJsPlatform implements IPlatform {
     * @param callback The function that receives a notification when an event of the specified type occurs.
     * @param capture If true, useCapture indicates that the user wishes to initiate capture.
     */
-    addEventListener(eventName: string, callback: Function, capture?: boolean): void;
+    addEventListener(eventName: string, callback: EventListenerOrEventListenerObject, capture?: boolean): void;
     /**
     * Remove a global event listener.
     * @param eventName A string representing the event type to listen for.
     * @param callback The function to remove from the event.
     * @param capture Specifies whether the listener to be removed was registered as a capturing listener or not.
     */
-    removeEventListener(eventName: string, callback: Function, capture?: boolean): void;
+    removeEventListener(eventName: string, callback: EventListenerOrEventListenerObject, capture?: boolean): void;
     /**
     * The runtime's XMLHttpRequest API.
     */

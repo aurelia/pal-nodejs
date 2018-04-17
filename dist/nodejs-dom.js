@@ -53,6 +53,9 @@ class NodeJsDom {
     getElementById(id) {
         return this.global.document.getElementById(id);
     }
+    querySelector(query) {
+        return this.global.document.querySelector(query);
+    }
     querySelectorAll(query) {
         return this.global.document.querySelectorAll(query);
     }
