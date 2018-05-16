@@ -73,6 +73,10 @@ function patchNotifyChange(window: Window) {
   intersectSetter(node_proto, "nodeValue", notify);
   intersectSetter(node_proto, "textContent", notify);
 
+  let char_proto = (<any>window)._core.CharacterData.prototype;
+
+  intersectSetter(char_proto, "data", notify);
+
   let element_proto = (<any>window)._core.Element.prototype;
 
   intersectMethod(element_proto, "setAttribute", notify);
