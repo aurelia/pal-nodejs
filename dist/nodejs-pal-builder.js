@@ -59,6 +59,8 @@ function patchNotifyChange(window) {
     intersectMethod(node_proto, "replaceChild", notify);
     intersectSetter(node_proto, "nodeValue", notify);
     intersectSetter(node_proto, "textContent", notify);
+    let char_proto = window._core.CharacterData.prototype;
+    intersectSetter(char_proto, "data", notify);
     let element_proto = window._core.Element.prototype;
     intersectMethod(element_proto, "setAttribute", notify);
     intersectMethod(element_proto, "removeAttribute", notify);
