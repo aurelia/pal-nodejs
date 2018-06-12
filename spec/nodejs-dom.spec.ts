@@ -101,8 +101,7 @@ describe('NodeJs Dom', () => {
     expect(DOM.dispatchEvent).toBeDefined();
   });
 
-  it('NodeList is defined',()=>{
+  it('NodeList is defined', () => {
     expect(PLATFORM.global.NodeList).toBeDefined();
   });
-  
 });
