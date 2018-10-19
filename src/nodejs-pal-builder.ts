@@ -86,8 +86,7 @@ function patchNotifyChange(window: Window) {
 }
 
 
-function ensurePerformance(window) {
-  const startOffset = Date.now ? Date.now() : + (new Date);
+export function ensurePerformance(window) {
   const _entries = [];
   const _marksIndex = {};
 
