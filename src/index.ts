@@ -4,6 +4,8 @@ import { initializePAL, DOM, PLATFORM, FEATURE, isInitialized } from 'aurelia-pa
 import { buildPal } from './nodejs-pal-builder';
 import { MutationNotifier } from './polyfills/mutation-observer';
 
+export { ensurePerformance } from './nodejs-pal-builder';
+
 /**
 * Initializes the PAL with the NodeJS-targeted implementation.
 */
