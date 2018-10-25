@@ -68,7 +68,6 @@ function patchNotifyChange(window) {
     intersectMethod(element_proto, "removeAttributeNS", notify);
 }
 function ensurePerformance(window) {
-    const startOffset = Date.now ? Date.now() : +(new Date);
     const _entries = [];
     const _marksIndex = {};
     function _filterEntries(key, value) {
@@ -144,6 +143,7 @@ function ensurePerformance(window) {
         };
     }
 }
+exports.ensurePerformance = ensurePerformance;
 function ensureMutationObserver(window) {
     if (!window.MutationObserver) {
         window.MutationObserver = mutation_observer_1.MutationObserver;

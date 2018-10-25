@@ -8,3 +8,4 @@ export declare function buildPal(): {
     dom: IDom;
     feature: IFeature;
 };
+export declare function ensurePerformance(window: any): void;

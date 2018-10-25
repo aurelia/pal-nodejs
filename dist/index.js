@@ -4,6 +4,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const aurelia_pal_1 = require("aurelia-pal");
 const nodejs_pal_builder_1 = require("./nodejs-pal-builder");
 const mutation_observer_1 = require("./polyfills/mutation-observer");
+var nodejs_pal_builder_2 = require("./nodejs-pal-builder");
+exports.ensurePerformance = nodejs_pal_builder_2.ensurePerformance;
 /**
 * Initializes the PAL with the NodeJS-targeted implementation.
 */
