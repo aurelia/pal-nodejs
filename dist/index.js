@@ -3,7 +3,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const aurelia_pal_1 = require("aurelia-pal");
 const nodejs_pal_builder_1 = require("./nodejs-pal-builder");
-const mutation_observer_1 = require("./polyfills/mutation-observer");
 var nodejs_pal_builder_2 = require("./nodejs-pal-builder");
 exports.ensurePerformance = nodejs_pal_builder_2.ensurePerformance;
 /**
@@ -68,20 +67,19 @@ function initialize() {
     });
 }
 exports.initialize = initialize;
+// snippet copied from https://github.com/lukechilds/browser-env
+function createBrowserGlobals() {
+    Object.getOwnPropertyNames(aurelia_pal_1.PLATFORM.global)
+        // avoid conflict with nodejs globals
+        .filter(prop => typeof global[prop] === 'undefined')
+        .forEach(prop => global[prop] = aurelia_pal_1.PLATFORM.global[prop]);
+}
 /**
  * @description initializes and makes variables like 'window' into NodeJS globals
  */
 function globalize() {
     initialize();
-    global.window = global.self = aurelia_pal_1.PLATFORM.global;
-    global.document = aurelia_pal_1.PLATFORM.global.document;
-    global.Element = aurelia_pal_1.DOM.Element;
-    global.NodeList = aurelia_pal_1.PLATFORM.global.NodeList;
-    global.SVGElement = aurelia_pal_1.DOM.SVGElement;
-    global.HTMLElement = aurelia_pal_1.PLATFORM.global.HTMLElement;
-    global.requestAnimationFrame = aurelia_pal_1.PLATFORM.global.requestAnimationFrame;
-    global.location = aurelia_pal_1.PLATFORM.location;
-    global.history = aurelia_pal_1.PLATFORM.history;
+    createBrowserGlobals();
     global.System = {
         import(moduleId) {
             try {
@@ -102,7 +100,6 @@ function reset(window) {
     if (window) {
         window.close();
     }
-    mutation_observer_1.MutationNotifier.getInstance().destruct();
 }
 exports.reset = reset;
 
