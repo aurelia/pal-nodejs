@@ -29,11 +29,11 @@
   },
   "dependencies": {
     "aurelia-pal": "^1.1.0",
-    "jsdom": "^15.0.0"
+    "jsdom": "^15.1.1"
   },
   "devDependencies": {
     "@types/jasmine": "^2.2.34",
-    "@types/jsdom": "^11.0.1",
+    "@types/jsdom": "^12.2.4",
     "aurelia-tools": "^0.2.4",
     "gulp": "^3.9.1",
     "gulp-babel": "^6.1.2",
