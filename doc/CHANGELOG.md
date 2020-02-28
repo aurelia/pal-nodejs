@@ -1,3 +1,18 @@
+<a name="2.0.0"></a>
+# [2.0.0](https://github.com/aurelia/pal-nodejs/compare/1.2.0...2.0.0) (2020-02-28)
+
+
+### Bug Fixes
+
+* **platform:** type mismatch ([c823413](https://github.com/aurelia/pal-nodejs/commit/c823413))
+
+
+### Features
+
+* update jsdom v15.0.0 to improve compatibility of browser simulation ([dfc8b36](https://github.com/aurelia/pal-nodejs/commit/dfc8b36)), closes [aurelia/cli#1019](https://github.com/aurelia/cli/issues/1019)
+
+
+
 <a name="1.1.1"></a>
 ## [1.1.1](https://github.com/aurelia/pal-nodejs/compare/1.1.0...1.1.1) (2018-06-12)
 
