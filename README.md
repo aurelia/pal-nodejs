@@ -32,3 +32,7 @@ To build the code, follow these steps.
   npm test
   ```
 5. You will find the compiled code in the `dist` folder in CommonJS module format.
+
+# Acknowledgement
+
+This software used a snippet borrowed from [browser-env](https://github.com/lukechilds/browser-env).

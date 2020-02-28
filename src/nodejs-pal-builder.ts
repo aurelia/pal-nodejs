@@ -7,22 +7,14 @@ import { NodeJsPlatform } from './nodejs-platform';
 import { NodeJsFeature } from './nodejs-feature';
 import { NodeJsDom } from './nodejs-dom';
 import { JSDOM } from 'jsdom';
-import { MutationObserver } from './polyfills/mutation-observer';
-import { MutationNotifier } from './polyfills/mutation-observer';
-
-let _patchedjsdom = false;
 
 export function buildPal(): { global: IGlobal, platform: IPlatform, dom: IDom, feature: IFeature } {
-  var jsdom = new JSDOM(undefined, {});
+  // https://github.com/jsdom/jsdom/issues/2304
+  // set url to enable global var localStorage and sessionStorage
+  var jsdom = new JSDOM(undefined, {url: "http://localhost/"});
   var global: IGlobal = <IGlobal>jsdom.window;
 
-  if (!_patchedjsdom) {
-    patchNotifyChange(global);
-    _patchedjsdom = true;
-  }
-
   ensurePerformance(global.window);
-  ensureMutationObserver(global.window);
 
   var platform = new NodeJsPlatform(global, jsdom);
   var dom = new NodeJsDom(global);
@@ -59,32 +51,6 @@ let intersectMethod = function (proto, methodName: string, intersect: Function) 
     return ret;
   };
 };
-
-function patchNotifyChange(window: Window) {
-  let notifyInstance = MutationNotifier.getInstance();
-  let notify = function (node: Node) { notifyInstance.notifyChanged(node); };
-
-  let node_proto = (<any>window)._core.Node.prototype;
-
-  intersectMethod(node_proto, "appendChild", notify);
-  intersectMethod(node_proto, "insertBefore", notify);
-  intersectMethod(node_proto, "removeChild", notify);
-  intersectMethod(node_proto, "replaceChild", notify);
-  intersectSetter(node_proto, "nodeValue", notify);
-  intersectSetter(node_proto, "textContent", notify);
-
-  let char_proto = (<any>window)._core.CharacterData.prototype;
-
-  intersectSetter(char_proto, "data", notify);
-
-  let element_proto = (<any>window)._core.Element.prototype;
-
-  intersectMethod(element_proto, "setAttribute", notify);
-  intersectMethod(element_proto, "removeAttribute", notify);
-  intersectMethod(element_proto, "removeAttributeNode", notify);
-  intersectMethod(element_proto, "removeAttributeNS", notify);
-}
-
 
 export function ensurePerformance(window) {
   const _entries = [];
@@ -177,11 +143,5 @@ export function ensurePerformance(window) {
     window.performance.clearMeasures = window.performance.webkitClearMeasures || function (name) {
       _clearEntries("measure", name);
     };
-  }
-}
-
-function ensureMutationObserver(window) {
-  if (!window.MutationObserver) {
-    window.MutationObserver = MutationObserver;
   }
 }

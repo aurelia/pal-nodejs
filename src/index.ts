@@ -2,8 +2,6 @@
 
 import { initializePAL, DOM, PLATFORM, FEATURE, isInitialized } from 'aurelia-pal';
 import { buildPal } from './nodejs-pal-builder';
-import { MutationNotifier } from './polyfills/mutation-observer';
-
 export { ensurePerformance } from './nodejs-pal-builder';
 
 /**
@@ -73,20 +71,20 @@ export function initialize(): void {
   });
 }
 
+// snippet copied from https://github.com/lukechilds/browser-env
+function createBrowserGlobals() {
+  Object.getOwnPropertyNames(PLATFORM.global)
+    // avoid conflict with nodejs globals
+    .filter(prop => typeof global[prop] === 'undefined')
+    .forEach(prop => global[prop] = PLATFORM.global[prop]);
+}
+
 /**
  * @description initializes and makes variables like 'window' into NodeJS globals
  */
 export function globalize() {
   initialize();
-  global.window = global.self = PLATFORM.global;
-  global.document = PLATFORM.global.document;
-  global.Element = DOM.Element;
-  global.NodeList = PLATFORM.global.NodeList;
-  global.SVGElement = DOM.SVGElement;
-  global.HTMLElement = PLATFORM.global.HTMLElement;
-  global.requestAnimationFrame = PLATFORM.global.requestAnimationFrame;
-  global.location = PLATFORM.location;
-  global.history = PLATFORM.history;
+  createBrowserGlobals();
   global.System = {
     import(moduleId: string) {
       try {
@@ -106,6 +104,4 @@ export function reset(window?: Window) {
   if (window) {
     window.close();
   }
-
-  MutationNotifier.getInstance().destruct();
 }

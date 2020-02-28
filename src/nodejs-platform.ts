@@ -52,7 +52,7 @@ export class NodeJsPlatform implements IPlatform {
   * @param callback A callback that will receive each module id along with the module object. Return true to end enumeration.
   */
   eachModule(callback: (key: string, value: Object) => boolean): void {
-    //TODO: What is this? 
+    //TODO: What is this?
   }
   /**
   * Add a global event listener.
