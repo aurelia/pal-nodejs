@@ -21,10 +21,14 @@
   "main": "dist/index.js",
   "typings": "dist/types/index.d.ts",
   "scripts": {
+    "prebuild": "rimraf dist",
     "build": "tsc -p tsconfig.build.json",
     "build:dts": "tsc -p tsconfig.build.json --emitDeclarationOnly --declaration true --declarationDir dist/types --removeComments false",
     "postbuild": "npm run build:dts",
-    "test": "ts-node node_modules/jasmine/bin/jasmine --config=test/support/jasmine.json"
+    "test": "ts-node node_modules/jasmine/bin/jasmine --config=test/support/jasmine.json",
+    "changelog": "standard-version -t \"\" -i doc/CHANGELOG.md --skip.commit --skip.tag",
+    "precut-release": "npm run test && npm run build",
+    "cut-release": "npm run changelog"
   },
   "repository": {
     "type": "git",
@@ -40,6 +44,8 @@
     "@types/node": "^16.11.36",
     "jasmine": "^4.1.0",
     "jasmine-core": "^4.1.1",
+    "rimraf": "^3.0.2",
+    "standard-version": "^9.5.0",
     "ts-node": "^10.7.0",
     "tslib": "^2.4.0",
     "typedoc": "^0.22.15",
