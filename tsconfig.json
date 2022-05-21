@@ -7,8 +7,8 @@
     "moduleResolution": "node",
     "stripInternal": true,
     "preserveConstEnums": true,
-    "declaration": true,
-    "removeComments": false
+    "removeComments": true,
+    "lib": ["es2018"]
   },
   "exclude": [
     "node_modules"

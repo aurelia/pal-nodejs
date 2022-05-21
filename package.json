@@ -19,10 +19,10 @@
     "Devan Patel (https://github.com/devanp92)"
   ],
   "main": "dist/index.js",
-  "typings": "dist/index.d.ts",
+  "typings": "dist/types/index.d.ts",
   "scripts": {
-    "build": "tsc",
-    "build:dts": "tsc --emitDeclarationOnly --declaration true --declarationDir dist/types",
+    "build": "tsc -p tsconfig.build.json",
+    "build:dts": "tsc -p tsconfig.build.json --emitDeclarationOnly --declaration true --declarationDir dist/types --removeComments false",
     "postbuild": "npm run build:dts",
     "test": "ts-node node_modules/jasmine/bin/jasmine --config=test/support/jasmine.json"
   },
@@ -37,6 +37,7 @@
   "devDependencies": {
     "@types/jasmine": "^4.0.3",
     "@types/jsdom": "^16.2.14",
+    "@types/node": "^16.11.36",
     "jasmine": "^4.1.0",
     "jasmine-core": "^4.1.1",
     "ts-node": "^10.7.0",
