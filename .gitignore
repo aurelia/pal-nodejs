@@ -5,3 +5,4 @@ jspm_packages
 build/reports
 spec/*.js
 spec/*.map
+.npmrc
