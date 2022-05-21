@@ -6,11 +6,11 @@
     "emitDecoratorMetadata": false,
     "moduleResolution": "node",
     "stripInternal": true,
-    "preserveConstEnums": true,    
+    "preserveConstEnums": true,
     "declaration": true,
     "removeComments": false
   },
   "exclude": [
-    "node_modules"   
+    "node_modules"
   ]
 }
