@@ -31,15 +31,15 @@ To build the code, follow these steps.
   ```shell
   npm install
   ```
-3. Ensure that [Gulp](http://gulpjs.com/) is installed. If you need to install it, use the following command:
-
-  ```shell
-  npm install -g gulp
-  ```
-4. To build and test the code, you can now run:
+3. To test the code, run:
 
   ```shell
   npm test
+  ```
+4. To build the code, run:
+
+  ```shell
+  npm run build
   ```
 5. You will find the compiled code in the `dist` folder in CommonJS module format.
 
