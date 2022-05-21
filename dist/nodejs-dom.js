@@ -1,8 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-/**
-* Represents the core APIs of the DOM.
-*/
+exports.NodeJsDom = void 0;
 class NodeJsDom {
     constructor(global) {
         this.global = global;
@@ -108,5 +106,3 @@ class NodeJsDom {
     }
 }
 exports.NodeJsDom = NodeJsDom;
-
-//# sourceMappingURL=nodejs-dom.js.map

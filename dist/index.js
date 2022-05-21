@@ -1,19 +1,16 @@
 "use strict";
-/// <reference path="./nodejs-global.ts" />
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.reset = exports.globalize = exports.initialize = exports.ensurePerformance = void 0;
 const aurelia_pal_1 = require("aurelia-pal");
 const nodejs_pal_builder_1 = require("./nodejs-pal-builder");
 var nodejs_pal_builder_2 = require("./nodejs-pal-builder");
-exports.ensurePerformance = nodejs_pal_builder_2.ensurePerformance;
-/**
-* Initializes the PAL with the NodeJS-targeted implementation.
-*/
+Object.defineProperty(exports, "ensurePerformance", { enumerable: true, get: function () { return nodejs_pal_builder_2.ensurePerformance; } });
 function initialize() {
     if (aurelia_pal_1.isInitialized) {
         return;
     }
-    let pal = nodejs_pal_builder_1.buildPal();
-    aurelia_pal_1.initializePAL((platform, feature, dom) => {
+    let pal = (0, nodejs_pal_builder_1.buildPal)();
+    (0, aurelia_pal_1.initializePAL)((platform, feature, dom) => {
         Object.assign(platform, pal.platform);
         Object.setPrototypeOf(platform, pal.platform.constructor.prototype);
         Object.assign(dom, pal.dom);
@@ -67,16 +64,11 @@ function initialize() {
     });
 }
 exports.initialize = initialize;
-// snippet copied from https://github.com/lukechilds/browser-env
 function createBrowserGlobals() {
     Object.getOwnPropertyNames(aurelia_pal_1.PLATFORM.global)
-        // avoid conflict with nodejs globals
         .filter(prop => typeof global[prop] === 'undefined')
         .forEach(prop => global[prop] = aurelia_pal_1.PLATFORM.global[prop]);
 }
-/**
- * @description initializes and makes variables like 'window' into NodeJS globals
- */
 function globalize() {
     initialize();
     createBrowserGlobals();
@@ -102,5 +94,3 @@ function reset(window) {
     }
 }
 exports.reset = reset;
-
-//# sourceMappingURL=index.js.map

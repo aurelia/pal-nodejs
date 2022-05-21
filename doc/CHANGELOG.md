@@ -1,3 +1,11 @@
+# Changelog
+
+All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+## [3.0.0-rc.1](https://github.com/aurelia/pal-nodejs/compare/2.0.0...3.0.0-rc.1) (2022-05-21)
+
+* Update `jsdom` to version 19, close [#46](https://github.com/aurelia/pal-nodejs/issues/46)
+
 <a name="2.0.0"></a>
 # [2.0.0](https://github.com/aurelia/pal-nodejs/compare/1.2.0...2.0.0) (2020-02-28)
 

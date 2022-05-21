@@ -1,12 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ensurePerformance = exports.buildPal = void 0;
 const nodejs_platform_1 = require("./nodejs-platform");
 const nodejs_feature_1 = require("./nodejs-feature");
 const nodejs_dom_1 = require("./nodejs-dom");
 const jsdom_1 = require("jsdom");
 function buildPal() {
-    // https://github.com/jsdom/jsdom/issues/2304
-    // set url to enable global var localStorage and sessionStorage
     var jsdom = new jsdom_1.JSDOM(undefined, { url: "http://localhost/" });
     var global = jsdom.window;
     ensurePerformance(global.window);
@@ -120,5 +119,3 @@ function ensurePerformance(window) {
     }
 }
 exports.ensurePerformance = ensurePerformance;
-
-//# sourceMappingURL=nodejs-pal-builder.js.map
