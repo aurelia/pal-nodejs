@@ -45,7 +45,7 @@
   },
   "devDependencies": {
     "@types/jasmine": "^4.0.3",
-    "@types/jsdom": "^16.2.14",
+    "@types/jsdom": "^21.1.1",
     "@types/node": "^16.11.36",
     "jasmine": "^4.1.0",
     "jasmine-core": "^4.1.1",
