@@ -66,8 +66,12 @@ function initialize() {
 exports.initialize = initialize;
 function createBrowserGlobals() {
     Object.getOwnPropertyNames(aurelia_pal_1.PLATFORM.global)
-        .filter(prop => prop !== 'undefined' && typeof global[prop] === 'undefined')
-        .forEach(prop => global[prop] = aurelia_pal_1.PLATFORM.global[prop]);
+        .filter(prop => typeof global[prop] === 'undefined')
+        .forEach(prop => {
+          if (prop !== 'undefined') {
+            global[prop] = aurelia_pal_1.PLATFORM.global[prop]
+          }
+        });
 }
 function globalize() {
     initialize();
