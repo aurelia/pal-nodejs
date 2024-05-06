@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.0.0-rc.2](https://github.com/aurelia/pal-nodejs/compare/3.0.0-rc.1...3.0.0-rc.2) (2024-05-06)
+
+
+### Bug Fixes
+
+* filter out not writable "undefined" property from globals ([69227d3](https://github.com/aurelia/pal-nodejs/commit/69227d3bb56daa99ffc9e61a80c93d1da8516389))
+
 ## [3.0.0-rc.1](https://github.com/aurelia/pal-nodejs/compare/2.0.0...3.0.0-rc.1) (2022-05-21)
 
 * Update `jsdom` to version 19, close [#46](https://github.com/aurelia/pal-nodejs/issues/46)

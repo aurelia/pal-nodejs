@@ -1,6 +1,6 @@
 {
   "name": "aurelia-pal-nodejs",
-  "version": "3.0.0-rc.1",
+  "version": "3.0.0-rc.2",
   "description": "The Node.js-specific implementation of Aurelia's platform abstraction layer.",
   "keywords": [
     "aurelia",
@@ -40,20 +40,19 @@
     "url": "http://github.com/aurelia/pal-nodejs"
   },
   "dependencies": {
-    "aurelia-pal": "^1.1.0",
-    "jsdom": "^19.0.0"
+    "aurelia-pal": "^1.8.2",
+    "jsdom": ">= 19"
   },
   "devDependencies": {
-    "@types/jasmine": "^4.0.3",
-    "@types/jsdom": "^16.2.14",
-    "@types/node": "^16.11.36",
-    "jasmine": "^4.1.0",
-    "jasmine-core": "^4.1.1",
-    "rimraf": "^3.0.2",
+    "@types/jasmine": "^5.1.4",
+    "@types/jsdom": "^21.1.6",
+    "@types/node": "^20.12.8",
+    "jasmine": "^5.1.0",
+    "jasmine-core": "^5.1.2",
+    "rimraf": "^5.0.5",
     "standard-version": "^9.5.0",
-    "ts-node": "^10.7.0",
-    "tslib": "^2.4.0",
-    "typedoc": "^0.22.15",
-    "typescript": "^4.6.4"
+    "ts-node": "^10.9.2",
+    "tslib": "^2.6.2",
+    "typescript": "^4.9.5"
   }
 }
