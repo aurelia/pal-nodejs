@@ -75,7 +75,7 @@ export function initialize(): void {
 function createBrowserGlobals() {
   Object.getOwnPropertyNames(PLATFORM.global)
     // avoid conflict with nodejs globals
-    .filter(prop => typeof global[prop] === 'undefined')
+    .filter(prop => typeof global[prop] === 'undefined' && prop !== 'undefined')
     .forEach(prop => global[prop] = PLATFORM.global[prop]);
 }
 
